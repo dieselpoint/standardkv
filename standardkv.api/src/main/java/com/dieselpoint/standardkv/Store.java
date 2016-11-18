@@ -11,9 +11,14 @@ public interface Store {
 	public void init(String name);
 	
 	/**
-	 * Get a reference to a table, creating it if necessary.
+	 * Get a reference to a bucket. Returns null if the bucket does not exist.
 	 */
 	public Bucket getBucket(String name);
+	
+	/**
+	 * Create a bucket. Throws a StoreException if it already exists.
+	 */
+	public Bucket createBucket(String name);
 
 	/**
 	 * Close the store.

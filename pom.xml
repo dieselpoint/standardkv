@@ -9,7 +9,8 @@
 
 	<modules>
 		<module>standardkv.api</module>
-		<module>standardkv.leveldb</module>
+		<module>standardkv.rocksdb</module>
+		<module>standardkv.memdb</module>
 	</modules>
 
 	<description>A standard interface over a key/value store.</description>
