@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+
+	<parent>
+		<groupId>com.dieselpoint</groupId>
+		<artifactId>standardkv</artifactId>
+		<version>0.1-SNAPSHOT</version>
+	</parent>
+
+	<artifactId>standardkv.lmdb</artifactId>
+
+	<properties>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<skipTests>true</skipTests>
+	</properties>
+
+	<build>
+		<plugins>
+			<plugin>
+				<artifactId>maven-compiler-plugin</artifactId>
+			</plugin>
+		</plugins>
+	</build>
+
+	<dependencies>
+		<dependency>
+			<groupId>com.dieselpoint</groupId>
+			<artifactId>standardkv.core</artifactId>
+			<version>${project.version}</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.deephacks.lmdbjni</groupId>
+			<artifactId>lmdbjni-win64</artifactId>
+			<version>0.4.6</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.deephacks.lmdbjni</groupId>
+			<artifactId>lmdbjni-linux64</artifactId>
+			<version>0.4.6</version>
+		</dependency>
+	</dependencies>
+</project>
