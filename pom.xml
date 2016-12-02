@@ -3,14 +3,16 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>com.dieselpoint</groupId>
 	<artifactId>standardkv</artifactId>
-	<version>0.1</version>
+	<version>0.1-SNAPSHOT</version>
 	<name>StandardKV Parent Project</name>
 	<packaging>pom</packaging>
 
 	<modules>
-		<module>standardkv.api</module>
+		<module>standardkv.core</module>
 		<module>standardkv.rocksdb</module>
 		<module>standardkv.memdb</module>
+		<module>standardkv.leveldb</module>
+		<module>standardkv.lmdb</module>
 	</modules>
 
 	<description>A standard interface over a key/value store.</description>
