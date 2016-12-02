@@ -30,10 +30,11 @@
 			<artifactId>standardkv.api</artifactId>
 			<version>${project.version}</version>
 		</dependency>
+		
 		<dependency>
 			<groupId>org.rocksdb</groupId>
 			<artifactId>rocksdbjni</artifactId>
-			<version>4.9.0</version>
+			<version>4.11.2</version>
 		</dependency>
 		
 		<!-- 

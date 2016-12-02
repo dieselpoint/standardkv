@@ -1,6 +1,6 @@
 #StandardKV
 
-StandardKV provides a standardized interface over a key/value store. 
+StandardKV provides a standardized interface over a key/value store. It also contains several implementations
 
 Every KV store does things a little differently; some ...
 
@@ -24,5 +24,16 @@ Store store = StoreFactory.getStore(stuff here);
 ```
 
 Usage goes here.
+
+
+to add:
+berkeleydb
+mapdb
+wiredtiger
+sqlite?
+derby?
+
+add benchmarks
+add concurrency testing. test for crash and consistency separately.
 
 
