@@ -1,6 +1,7 @@
 package com.dieselpoint.standardkv.impl.leveldb;
 
 import java.util.Map.Entry;
+import java.util.concurrent.ConcurrentHashMap;
 
 import org.iq80.leveldb.DB;
 import org.iq80.leveldb.DBIterator;
@@ -11,13 +12,12 @@ import com.dieselpoint.standardkv.StoreException;
 import com.dieselpoint.standardkv.Table;
 import com.dieselpoint.standardkv.Util;
 
-
-
-
 public class LevelDbBucket implements Bucket {
-	
+
 	private DB db;
 	private String bucketName;
+
+	private ConcurrentHashMap<String, Table> tables = new ConcurrentHashMap<String, Table>();
 
 	public LevelDbBucket(DB db, String bucketName) {
 		if (!Util.isAllLettersOrDigits(bucketName)) {
@@ -28,28 +28,20 @@ public class LevelDbBucket implements Bucket {
 	}
 
 	@Override
-	public Table getTable(String tableName) {
-		if (!Util.isAllLettersOrDigits(tableName)) {
-			throw new StoreException("tableName must consist of letters and digits only");
-		}
-		return new LevelDbTable(db, bucketName, tableName);
-	}
-	
-	@Override
 	public void delete() {
 
 		ByteArray keyBuf = new ByteArray();
 		keyBuf.append(bucketName);
 		keyBuf.appendByte(LevelDbTable.DOT);
-		byte [] prefix = keyBuf.getTrimmedArray();
+		byte[] prefix = keyBuf.getTrimmedArray();
 		int prefixLen = prefix.length;
-		
+
 		DBIterator it = db.iterator();
 		it.seek(prefix);
 		while (it.hasNext()) {
-			Entry <byte [], byte []> entry = it.next();
-			byte [] key = entry.getKey();
-			
+			Entry<byte[], byte[]> entry = it.next();
+			byte[] key = entry.getKey();
+
 			// see if key matches prefix
 			if (key.length < prefix.length) {
 				break;
@@ -59,7 +51,7 @@ public class LevelDbBucket implements Bucket {
 					break;
 				}
 			}
-			
+
 			db.delete(key);
 		}
 	}
@@ -70,9 +62,17 @@ public class LevelDbBucket implements Bucket {
 	}
 
 	@Override
-	public Table createTable(String name) {
-		// TODO Auto-generated method stub
-		return null;
+	public Table getTable(String tableName, boolean createIfNecessary) {
+		if (createIfNecessary) {
+			return tables.computeIfAbsent(tableName, k -> createTable(tableName));
+		} else {
+			return tables.get(tableName);
+		}
+	}
+
+	private LevelDbTable createTable(String tableName) {
+		Util.checkForLegalName(tableName);
+		return new LevelDbTable(db, bucketName, tableName);
 	}
 
 }

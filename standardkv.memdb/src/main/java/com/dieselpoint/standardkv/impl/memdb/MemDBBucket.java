@@ -3,25 +3,19 @@ package com.dieselpoint.standardkv.impl.memdb;
 import java.util.concurrent.ConcurrentHashMap;
 
 import com.dieselpoint.standardkv.Bucket;
-import com.dieselpoint.standardkv.StoreException;
 import com.dieselpoint.standardkv.Table;
-
+import com.dieselpoint.standardkv.Util;
 
 public class MemDBBucket implements Bucket {
-	
-	private ConcurrentHashMap<String, MemDBTable> map = new ConcurrentHashMap();
+
+	private ConcurrentHashMap<String, MemDBTable> tables = new ConcurrentHashMap();
 
 	public MemDBBucket(String name) {
 	}
 
 	@Override
-	public Table getTable(String name) {
-		return map.get(name);
-	}
-
-	@Override
 	public void delete() {
-		map.clear();
+		tables.clear();
 	}
 
 	@Override
@@ -29,14 +23,18 @@ public class MemDBBucket implements Bucket {
 	}
 
 	@Override
-	public Table createTable(String name) {
-		if (getTable(name) != null) {
-			throw new StoreException("Table already exists: " + name);
+	public Table getTable(String tableName, boolean createIfNecessary) {
+		if (createIfNecessary) {
+			return tables.computeIfAbsent(tableName, k -> createTable(tableName));
+		} else {
+			return tables.get(tableName);
 		}
-		MemDBTable table = new MemDBTable(name);
-		map.put(name, table);
+	}
+
+	private MemDBTable createTable(String tableName) {
+		Util.checkForLegalName(tableName);
+		MemDBTable table = new MemDBTable(tableName);
 		return table;
 	}
-	
 
 }

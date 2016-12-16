@@ -4,6 +4,7 @@ import static org.fusesource.leveldbjni.JniDBFactory.factory;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.concurrent.ConcurrentHashMap;
 
 import org.iq80.leveldb.DB;
 import org.iq80.leveldb.Options;
@@ -23,6 +24,10 @@ public class LevelDbStore implements Store {
 	
 	private DB db;
 	
+	private ConcurrentHashMap<String, LevelDbBucket> buckets = new ConcurrentHashMap<String, LevelDbBucket>();
+
+	
+	
 	public void init(String dir) {
 		File file = new File(dir);
 		Options options = new Options();
@@ -37,12 +42,6 @@ public class LevelDbStore implements Store {
 
 
 	@Override
-	public Bucket getBucket(String name) {
-		return new LevelDbBucket(db, name);
-	}
-	
-
-	@Override
 	public void close() {
 		try {
 			db.close();
@@ -51,11 +50,18 @@ public class LevelDbStore implements Store {
 		}
 	}
 
-
 	@Override
-	public Bucket createBucket(String name) {
-		// TODO Auto-generated method stub
-		return null;
+	public Bucket getBucket(String bucketName, boolean createIfNecessary) {
+		if (createIfNecessary) {
+			return buckets.computeIfAbsent(bucketName, k -> createBucket(bucketName));
+		} else {
+			return buckets.get(bucketName);
+		}
 	}
-
+	
+	private LevelDbBucket createBucket(String bucketName) {
+		return new LevelDbBucket(db, bucketName);
+	}
+	
+	
 }

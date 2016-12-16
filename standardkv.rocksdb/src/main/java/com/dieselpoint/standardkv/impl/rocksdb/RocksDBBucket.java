@@ -35,11 +35,9 @@ public class RocksDBBucket implements Bucket {
 	
 	
 	public RocksDBBucket(String rootDir, String bucketName) {
-		if (!Util.isAllLettersOrDigits(bucketName)) {
-			throw new StoreException("bucketName must consist of letters and digits only");
-		}
-		
-		//this.bucketName = bucketName;
+
+		Util.checkForLegalName(bucketName);
+
 		File pathFile = new File(rootDir, bucketName);
 		pathFile.mkdirs();
 		
@@ -88,25 +86,18 @@ public class RocksDBBucket implements Bucket {
 	
 	
 	@Override
-	public Table getTable(String tableName) {
-		return tables.get(tableName);
-	}
-	
-	public RocksDBTable createTable(String tableName) {
-		if (getTable(tableName) != null) {
-			throw new StoreException("Table already exists: " + tableName);
+	public Table getTable(String tableName, boolean createIfNecessary) {
+		if (createIfNecessary) {
+			return tables.computeIfAbsent(tableName, k -> createTable(tableName));
+		} else {
+			return tables.get(tableName);
 		}
-		
-		RocksDBTable table = createTableInternal(tableName);
-		tables.put(tableName, table);
-		return table;
 	}
+
 	
-	private RocksDBTable createTableInternal(String tableName) {
+	private RocksDBTable createTable(String tableName) {
 		try {
-			if (!Util.isAllLettersOrDigits(tableName)) {
-				throw new StoreException("tableName must consist of letters and digits only");
-			}
+			Util.checkForLegalName(tableName);
 			
 			ColumnFamilyDescriptor desc = new ColumnFamilyDescriptor(tableName.getBytes(StandardCharsets.UTF_8), cfo);
 			ColumnFamilyHandle handle = db.createColumnFamily(desc);
@@ -116,6 +107,7 @@ public class RocksDBBucket implements Bucket {
 			throw new StoreException(e);
 		}
 	}	
+	
 	
 	private ColumnFamilyOptions getColumnFamilyOptions() {
 		BlockBasedTableConfig tableOptions = new BlockBasedTableConfig();

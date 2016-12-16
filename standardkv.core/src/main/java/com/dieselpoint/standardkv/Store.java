@@ -13,12 +13,7 @@ public interface Store {
 	/**
 	 * Get a reference to a bucket. Returns null if the bucket does not exist.
 	 */
-	public Bucket getBucket(String name);
-	
-	/**
-	 * Create a bucket. Throws a StoreException if it already exists.
-	 */
-	public Bucket createBucket(String name);
+	public Bucket getBucket(String name, boolean createIfNecessary);
 
 	/**
 	 * Close the store.

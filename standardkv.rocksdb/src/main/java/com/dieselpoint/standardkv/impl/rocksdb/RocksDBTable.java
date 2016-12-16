@@ -10,29 +10,57 @@ import com.dieselpoint.standardkv.ByteSpan;
 import com.dieselpoint.standardkv.Cursor;
 import com.dieselpoint.standardkv.StoreException;
 import com.dieselpoint.standardkv.Table;
+import com.dieselpoint.standardkv.Util;
 import com.dieselpoint.standardkv.WriteBatch;
 
 public class RocksDBTable implements Table {
 
 	private RocksDBSub db;
-	private String tableName;
 	private ColumnFamilyHandle handle;
 	private WriteOptions wo = new WriteOptions();
 
 	public RocksDBTable(RocksDBSub db, String tableName, ColumnFamilyHandle handle) {
+		
+		if (Util.isEmpty(tableName)) {
+			throw new StoreException("tableName is empty");
+		}
+		
 		this.db = db;
-		this.tableName = tableName;
 		this.handle = handle;
 	}
 
 	@Override
 	public void put(ByteSpan key, ByteSpan value) {
 		try {
-			// this is temporary until rocksdb gets its act together and releases slices
-			ByteArray keyLocal = (ByteArray) key;
-			ByteArray valueLocal = (ByteArray) value;
 			
-			db.put(handle, keyLocal.getArray(), key.size(), valueLocal.getArray(), value.size());
+			byte [] keyarr;
+			int keylen;
+			byte [] valuearr;
+			int valuelen;
+			
+			// this is temporary until rocksdb gets its act together and releases slices
+			if (key instanceof ByteArray) {
+				ByteArray arr = (ByteArray) key;
+				keyarr = arr.getArray();
+				keylen = arr.size();
+			} else {
+				keylen = key.size();
+				keyarr = new byte[keylen];
+				key.copyTo(0, keyarr, 0, keylen);
+			}
+
+			if (value instanceof ByteArray) {
+				ByteArray arr = (ByteArray) value;
+				valuearr = arr.getArray();
+				valuelen = arr.size();
+			} else {
+				valuelen = value.size();
+				valuearr = new byte[valuelen];
+				value.copyTo(0, valuearr, 0, valuelen);
+			}
+			
+			db.put(handle, keyarr, keylen, valuearr, valuelen);
+			
 		} catch (RocksDBException e) {
 			throw new StoreException(e);
 		}

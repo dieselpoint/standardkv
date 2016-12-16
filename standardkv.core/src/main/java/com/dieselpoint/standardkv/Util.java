@@ -121,6 +121,39 @@ public class Util {
 	}
 	
 	/**
+	 * Return true if the source consists entirely of characters that
+	 * are allowed in names, that is, letters, numbers, periods, hyphens, and underscores.
+	 * @param source
+	 * @return
+	 */
+	public static boolean hasNameCharsOnly(String source) {
+		final int len = source.length();
+		for (int i = 0; i < len; i++) {
+			char ch = source.charAt(i);
+			if (Character.isLetterOrDigit(ch) || ch == '.' || ch == '-' || ch == '_') {
+				continue;
+			}
+			return false;
+		}
+		return true;
+	}
+	
+	/**
+	 * Various parts of the system need names, including bucket and table names. This method
+	 * makes sure that the names will work everywhere.
+	 */
+	public static void checkForLegalName(String name) {
+		
+		if (Util.isEmpty(name)) {
+			throw new StoreException("Name is empty");
+		}
+		
+		if (!hasNameCharsOnly(name)) {
+			throw new StoreException("Name must contain letters, numbers, periods, hyphens and underscores only.");
+		}
+	}
+	
+	/**
 	 * Delete a directory, including all its contents.
 	 */
 	public static void deleteDir(String dir) throws IOException {
@@ -142,6 +175,10 @@ public class Util {
 		       return FileVisitResult.CONTINUE;
 		   }
 		});
+	}
+
+	public static boolean isEmpty(String str) {
+		return  (str == null || str.length() == 0);
 	}
 	
 	

@@ -10,7 +10,6 @@ import org.rocksdb.RocksDB;
 
 import com.dieselpoint.standardkv.Bucket;
 import com.dieselpoint.standardkv.Store;
-import com.dieselpoint.standardkv.StoreException;
 
 public class RocksDBStore implements Store {
 	
@@ -44,14 +43,18 @@ public class RocksDBStore implements Store {
 	}
 
 	@Override
-	public Bucket getBucket(String bucketName) {
-		return buckets.get(bucketName);
+	public Bucket getBucket(String bucketName, boolean createIfNecessary) {
+		if (createIfNecessary) {
+			return buckets.computeIfAbsent(bucketName, k -> createBucket(bucketName));
+		} else {
+			return buckets.get(bucketName);
+		}
 	}
 	
-	private RocksDBBucket openBucket(String bucketName) {
-		//logger.info("Opening bucket in " + rootDir + " bucket " + bucketName);
+	private RocksDBBucket createBucket(String bucketName) {
 		return new RocksDBBucket(rootDir, bucketName);
 	}
+	
 
 	@Override
 	public void close() {
@@ -64,14 +67,5 @@ public class RocksDBStore implements Store {
 		}
 	}
 
-	@Override
-	public Bucket createBucket(String name) {
-		if (getBucket(name) != null) {
-			throw new StoreException("Bucket already exists: " + name);
-		}
-		RocksDBBucket bucket = openBucket(name);
-		buckets.put(name, bucket);
-		return bucket;
-	}
 
 }

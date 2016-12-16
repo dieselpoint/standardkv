@@ -13,8 +13,8 @@ public class TestStore {
 		//Store store = StoreFactory.getStore("/temp/lmdbtest", "lmdb");
 		Store store = StoreFactory.getStore("/temp/leveldb", "LevelDbStore");
 		
-		Bucket bucket = store.getBucket("mybucket");
-		Table table = bucket.getTable("footable");
+		Bucket bucket = store.getBucket("mybucket", true);
+		Table table = bucket.getTable("footable", true);
 		
 		table.put(new ByteArray("foo"), new ByteArray("bar"));
 		table.put(new ByteArray("foo"), new ByteArray("bar1"));

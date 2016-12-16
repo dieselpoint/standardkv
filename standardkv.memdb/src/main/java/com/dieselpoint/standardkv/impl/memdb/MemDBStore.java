@@ -6,7 +6,6 @@ import java.util.concurrent.ConcurrentHashMap;
 
 import com.dieselpoint.standardkv.Bucket;
 import com.dieselpoint.standardkv.Store;
-import com.dieselpoint.standardkv.StoreException;
 
 /**
  * This is not transactional. For testing only. It needs within-bucket transactions, across all tables in a bucket.
@@ -15,15 +14,10 @@ import com.dieselpoint.standardkv.StoreException;
  */
 public class MemDBStore implements Store {
 	
-	private ConcurrentHashMap<String, Bucket> map = new ConcurrentHashMap();
+	private ConcurrentHashMap<String, Bucket> buckets = new ConcurrentHashMap();
 
 	@Override
 	public void init(String name) {
-	}
-
-	@Override
-	public Bucket getBucket(String name) {
-		return map.get(name);
 	}
 
 	@Override
@@ -31,13 +25,16 @@ public class MemDBStore implements Store {
 	}
 
 	@Override
-	public synchronized Bucket createBucket(String name) {
-		if (getBucket(name) != null) {
-			throw new StoreException("Bucket already exists: " + name);
+	public Bucket getBucket(String bucketName, boolean createIfNecessary) {
+		if (createIfNecessary) {
+			return buckets.computeIfAbsent(bucketName, k -> createBucket(bucketName));
+		} else {
+			return buckets.get(bucketName);
 		}
-		Bucket bucket = new MemDBBucket(name);
-		map.put(name, bucket);
-		return bucket;
+	}
+	
+	private MemDBBucket createBucket(String bucketName) {
+		return new MemDBBucket(bucketName);
 	}
 
 }

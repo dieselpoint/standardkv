@@ -73,14 +73,9 @@ public class LmdbStore implements Store {
 	}
 	*/
 
-	@Override
-	public Bucket getBucket(String name) {
-		// TODO Auto-generated method stub
-		return null;
-	}
 
 	@Override
-	public Bucket createBucket(String name) {
+	public Bucket getBucket(String name, boolean createIfNecessary) {
 		// TODO Auto-generated method stub
 		return null;
 	}
