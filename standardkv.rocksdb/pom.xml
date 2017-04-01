@@ -34,15 +34,9 @@
 		<dependency>
 			<groupId>org.rocksdb</groupId>
 			<artifactId>rocksdbjni</artifactId>
+			<!-- <version>5.1.2</version> -->
 			<version>4.11.2</version>
 		</dependency>
-		
-		<!-- 
-		<dependency>
-			<groupId>org.slf4j</groupId>
-			<artifactId>slf4j-api</artifactId>
-		</dependency>
-		 -->
 		 
 		<dependency>
 			<groupId>junit</groupId>

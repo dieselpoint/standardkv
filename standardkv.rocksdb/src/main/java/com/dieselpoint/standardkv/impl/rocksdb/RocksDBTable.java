@@ -105,5 +105,20 @@ public class RocksDBTable implements Table {
 		}
 	}
 
+	@Override
+	public ByteSpan get(ByteSpan key) {
+		
+		int keylen = key.size();
+		byte [] keyarr = new byte[keylen];
+		key.copyTo(0, keyarr, 0, keylen);
+		
+		try {
+			byte [] value = db.get(handle, keyarr);
+			return new ByteArray(value);
+		} catch (RocksDBException e) {
+			throw new StoreException(e);
+		}
+	}
+
 	
 }

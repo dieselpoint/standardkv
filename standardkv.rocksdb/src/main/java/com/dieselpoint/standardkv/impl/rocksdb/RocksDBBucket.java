@@ -63,7 +63,7 @@ public class RocksDBBucket implements Bucket {
 			
 			//db = RocksDB.openReadOnly(dbo, path, descriptors, handles); // look at DBOptions
 			db = RocksDBSub.open(dbo, path, descriptors, handles); // look at DBOptions
-			
+
 			int count = handles.size();
 			for (int i = 0; i < count; i++) {
 				ColumnFamilyDescriptor desc = descriptors.get(i);
