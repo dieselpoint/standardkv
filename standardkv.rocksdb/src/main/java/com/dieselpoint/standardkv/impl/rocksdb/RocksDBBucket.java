@@ -15,8 +15,6 @@ import org.rocksdb.DBOptions;
 import org.rocksdb.Options;
 import org.rocksdb.RocksDB;
 import org.rocksdb.RocksDBException;
-import org.rocksdb.RocksDBSub;
-
 
 import com.dieselpoint.standardkv.Bucket;
 import com.dieselpoint.standardkv.StoreException;
@@ -28,7 +26,7 @@ public class RocksDBBucket implements Bucket {
 	
 	public static long BLOCK_SIZE = 1024 * 4;
 	
-	private RocksDBSub db;
+	private RocksDB db;
 	private String path;
 	private ConcurrentHashMap<String, Table> tables = new ConcurrentHashMap<String, Table>();
 	private ColumnFamilyOptions cfo = this.getColumnFamilyOptions();
@@ -62,7 +60,7 @@ public class RocksDBBucket implements Bucket {
 			dbo.setCreateIfMissing(true);
 			
 			//db = RocksDB.openReadOnly(dbo, path, descriptors, handles); // look at DBOptions
-			db = RocksDBSub.open(dbo, path, descriptors, handles); // look at DBOptions
+			db = RocksDB.open(dbo, path, descriptors, handles); // look at DBOptions
 
 			int count = handles.size();
 			for (int i = 0; i < count; i++) {

@@ -10,8 +10,11 @@ public class TestStore {
 	@Test
 	public void test() throws UnsupportedEncodingException {
 		
+		// TODO move the tests to a new tests-and-benchmarks module
+		
 		//Store store = StoreFactory.getStore("/temp/lmdbtest", "lmdb");
-		Store store = StoreFactory.getStore("/temp/leveldb", "LevelDbStore");
+		//Store store = StoreFactory.getStore("/temp/leveldb", "LevelDbStore");
+		Store store = StoreFactory.getStore("/temp/dbtest", StoreFactory.ROCKSDB);
 		
 		Bucket bucket = store.getBucket("mybucket", true);
 		Table table = bucket.getTable("footable", true);

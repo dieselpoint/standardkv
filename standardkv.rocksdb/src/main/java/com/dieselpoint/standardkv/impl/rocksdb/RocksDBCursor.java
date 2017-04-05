@@ -1,8 +1,8 @@
 package com.dieselpoint.standardkv.impl.rocksdb;
 
 import org.rocksdb.ColumnFamilyHandle;
-import org.rocksdb.RocksDBSub;
-import org.rocksdb.RocksIteratorSub;
+import org.rocksdb.RocksDB;
+import org.rocksdb.RocksIterator;
 
 import com.dieselpoint.standardkv.ByteArray;
 import com.dieselpoint.standardkv.ByteSpan;
@@ -11,20 +11,21 @@ import com.dieselpoint.standardkv.Cursor;
 
 public class RocksDBCursor implements Cursor {
 	
-	private RocksIteratorSub iterator;
+	private RocksIterator iterator;
 	private boolean beforeFirst = true;
 
-	public RocksDBCursor(RocksDBSub db, ColumnFamilyHandle handle) {
+	public RocksDBCursor(RocksDB db, ColumnFamilyHandle handle) {
 		iterator = db.newIterator(handle);
 	}
 	
 	@Override
 	public void seek(ByteSpan key) {
 		
-		// this is temporary
+		// TODO this is temporary. stupidly, rocks doesn't expose a keylen param in .seek()
 		ByteArray keyLocal = (ByteArray) key;
+		byte [] arr = keyLocal.getTrimmedArray();
 		
-		iterator.seek(keyLocal.getArray(), keyLocal.size());
+		iterator.seek(arr);
 		beforeFirst = false;
 	}
 

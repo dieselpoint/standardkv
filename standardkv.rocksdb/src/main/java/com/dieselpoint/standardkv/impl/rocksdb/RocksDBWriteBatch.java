@@ -1,15 +1,13 @@
 package com.dieselpoint.standardkv.impl.rocksdb;
 
 import org.rocksdb.ColumnFamilyHandle;
-import org.rocksdb.RocksWriteBatchSub;
 
-import com.dieselpoint.standardkv.ByteArray;
 import com.dieselpoint.standardkv.ByteSpan;
 import com.dieselpoint.standardkv.WriteBatch;
 
 public class RocksDBWriteBatch implements WriteBatch {
 	
-	private org.rocksdb.RocksWriteBatchSub wb = new org.rocksdb.RocksWriteBatchSub();
+	private org.rocksdb.WriteBatch wb = new org.rocksdb.WriteBatch();
 	private ColumnFamilyHandle handle;
 
 	public RocksDBWriteBatch(ColumnFamilyHandle handle) {
@@ -18,20 +16,20 @@ public class RocksDBWriteBatch implements WriteBatch {
 	
 	@Override
 	public void put(ByteSpan key, ByteSpan value) {
-		// this is temporary
-		ByteArray keyLocal = (ByteArray) key;
-		ByteArray valueLocal = (ByteArray) value;
+		// TODO this is temporary
+		byte [] keyarr = key.getTrimmedArray();
+		byte [] valuearr = value.getTrimmedArray();
 		
-		wb.put(handle, keyLocal.getArray(), key.size(), valueLocal.getArray(), value.size());
+		wb.put(handle, keyarr, valuearr);
 	}
 
 	@Override
 	public void remove(ByteSpan key) {
-		ByteArray keyLocal = (ByteArray) key;
-		wb.remove(handle, keyLocal.getArray(), key.size());
+		byte [] keyarr = key.getTrimmedArray();
+		wb.remove(handle, keyarr);
 	}
 	
-	protected RocksWriteBatchSub getInternalWB() {
+	protected org.rocksdb.WriteBatch getInternalWB() {
 		return wb;
 	}
 }

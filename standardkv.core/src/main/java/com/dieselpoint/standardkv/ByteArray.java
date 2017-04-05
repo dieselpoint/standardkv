@@ -43,7 +43,11 @@ public class ByteArray extends ByteSpan {
 		return array;
 	}
 
+	@Override
 	public byte[] getTrimmedArray() {
+		if (array.length == size) {
+			return array;
+		}
 		byte[] newArray = new byte[size];
 		System.arraycopy(array, 0, newArray, 0, size);
 		return newArray;

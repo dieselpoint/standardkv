@@ -259,4 +259,9 @@ public abstract class ByteSpan implements Comparable<ByteSpan> {
 	}
 
 
+	public byte[] getTrimmedArray() {
+		byte[] newArray = new byte[size];
+		copyTo(0, newArray, 0, size);
+		return newArray;
+	}
 }
