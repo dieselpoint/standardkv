@@ -5,8 +5,9 @@ import java.io.IOException;
 import org.iq80.leveldb.DB;
 import org.iq80.leveldb.DBIterator;
 
-import com.dieselpoint.standardkv.ByteArray;
-import com.dieselpoint.standardkv.ByteSpan;
+import com.dieselpoint.buffers.Buffer;
+import com.dieselpoint.buffers.ByteArray;
+import com.dieselpoint.buffers.ByteSpan;
 import com.dieselpoint.standardkv.Cursor;
 import com.dieselpoint.standardkv.StoreException;
 
@@ -18,11 +19,11 @@ public class LevelDbCursor implements Cursor {
 	private int keyPrefixLen;
 
 	public LevelDbCursor(DB db, ByteArray keyBuf, int keyPrefixLen) {
-		iterator = db.iterator();
+		//iterator = db.iterator();
 		
-		keyBuf.setSize(keyPrefixLen);
-		this.keyBuf.append(keyBuf);
-		this.keyPrefixLen = keyPrefixLen;
+		//keyBuf.setSize(keyPrefixLen);
+		//this.keyBuf.append(keyBuf);
+		//this.keyPrefixLen = keyPrefixLen;
 	}
 
 
@@ -112,23 +113,30 @@ public class LevelDbCursor implements Cursor {
 
 
 	@Override
-	public void seek(ByteSpan key) {
+	public void seek(Buffer key) {
 		// TODO Auto-generated method stub
 		
 	}
 
 
 	@Override
-	public ByteSpan getKey() {
+	public Buffer getKey() {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 
 	@Override
-	public ByteSpan getValue() {
+	public Buffer getValue() {
 		// TODO Auto-generated method stub
 		return null;
+	}
+
+
+	@Override
+	public void last() {
+		// TODO Auto-generated method stub
+		
 	}
 
 }

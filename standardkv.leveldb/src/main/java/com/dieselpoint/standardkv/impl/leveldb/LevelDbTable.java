@@ -2,8 +2,9 @@ package com.dieselpoint.standardkv.impl.leveldb;
 
 import org.iq80.leveldb.DB;
 
-import com.dieselpoint.standardkv.ByteArray;
-import com.dieselpoint.standardkv.ByteSpan;
+import com.dieselpoint.buffers.Buffer;
+import com.dieselpoint.buffers.ByteArray;
+import com.dieselpoint.buffers.ByteSpan;
 import com.dieselpoint.standardkv.Cursor;
 import com.dieselpoint.standardkv.Table;
 import com.dieselpoint.standardkv.WriteBatch;
@@ -52,23 +53,31 @@ public class LevelDbTable implements Table {
 
 
 
-	@Override
-	public void put(ByteSpan key, ByteSpan value) {
-		/*
-		keyBuf.setSize(keyPrefixLen);
-		keyBuf.append(key);
-		db.put(keyBuf.getTrimmedArray(), value.getTrimmedArray());
-		*/
-		
-	}
-
 
 
 	@Override
-	public void remove(ByteSpan key) {
+	public void remove(Buffer key) {
 		// TODO Auto-generated method stub
 		
 	}
+
+
+
+	@Override
+	public void put(Buffer key, Buffer value) {
+		// TODO Auto-generated method stub
+		
+	}
+
+
+
+	@Override
+	public Buffer get(Buffer key) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+
 
 
 

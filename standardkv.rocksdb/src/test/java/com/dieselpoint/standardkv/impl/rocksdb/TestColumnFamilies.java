@@ -4,8 +4,8 @@ import java.io.IOException;
 
 import org.junit.Test;
 
+import com.dieselpoint.buffers.ByteArray;
 import com.dieselpoint.standardkv.Bucket;
-import com.dieselpoint.standardkv.ByteArray;
 import com.dieselpoint.standardkv.Cursor;
 import com.dieselpoint.standardkv.Table;
 
@@ -32,13 +32,13 @@ public class TestColumnFamilies {
 		Cursor curs0 = table0.newCursor();
 		curs0.beforeFirst();
 		while (curs0.next()) {
-			System.out.println(curs0.getKey().getString() + " " + curs0.getValue().getString());
+			System.out.println(curs0.getKey().readUtf8String() + " " + curs0.getValue().readUtf8String());
 		}
 		
 		Cursor curs1 = table1.newCursor();
 		curs1.beforeFirst();
 		while (curs1.next()) {
-			System.out.println(curs1.getKey().getString() + " " + curs1.getValue().getString());
+			System.out.println(curs1.getKey().readUtf8String() + " " + curs1.getValue().readUtf8String());
 		}
 		
 	}

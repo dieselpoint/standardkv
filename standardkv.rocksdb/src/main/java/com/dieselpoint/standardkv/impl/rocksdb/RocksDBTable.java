@@ -5,13 +5,13 @@ import org.rocksdb.RocksDB;
 import org.rocksdb.RocksDBException;
 import org.rocksdb.WriteOptions;
 
-import com.dieselpoint.standardkv.ByteArray;
-import com.dieselpoint.standardkv.ByteSpan;
+import com.dieselpoint.buffers.Buffer;
+import com.dieselpoint.buffers.ByteArray;
 import com.dieselpoint.standardkv.Cursor;
 import com.dieselpoint.standardkv.StoreException;
 import com.dieselpoint.standardkv.Table;
-import com.dieselpoint.standardkv.Util;
 import com.dieselpoint.standardkv.WriteBatch;
+import com.dieselpoint.util.CommonUtil;
 
 public class RocksDBTable implements Table {
 
@@ -21,7 +21,7 @@ public class RocksDBTable implements Table {
 
 	public RocksDBTable(RocksDB db, String tableName, ColumnFamilyHandle handle) {
 		
-		if (Util.isEmpty(tableName)) {
+		if (CommonUtil.isEmpty(tableName)) {
 			throw new StoreException("tableName is empty");
 		}
 		
@@ -30,16 +30,14 @@ public class RocksDBTable implements Table {
 	}
 
 	@Override
-	public void put(ByteSpan key, ByteSpan value) {
+	public void put(Buffer key, Buffer value) {
 		try {
 			
 			// TODO stupid unnecessary rocks stuff
 			// this is temporary until rocksdb gets its act together and releases slices
-			byte [] keyarr = new byte[key.size()];
-			key.copyTo(0, keyarr, 0, key.size());
-			
-			byte [] valuearr = new byte[value.size()];
-			value.copyTo(0, valuearr, 0, value.size());
+			byte [] keyarr = ((ByteArray)key).getTrimmedArray();
+
+			byte [] valuearr = ((ByteArray)value).getTrimmedArray();
 			
 			db.put(handle, keyarr, valuearr);
 			
@@ -63,7 +61,7 @@ public class RocksDBTable implements Table {
 	}
 
 	@Override
-	public void remove(ByteSpan key) {
+	public void remove(Buffer key) {
 		try {
 			// TODO this is temporary. stupid rocks stuff
 			ByteArray keyLocal = (ByteArray) key;
@@ -89,14 +87,16 @@ public class RocksDBTable implements Table {
 	}
 
 	@Override
-	public ByteSpan get(ByteSpan key) {
+	public Buffer get(Buffer key) {
 		
-		int keylen = key.size();
-		byte [] keyarr = new byte[keylen];
-		key.copyTo(0, keyarr, 0, keylen);
+		// TODO fix
+		byte [] keyarr = ((ByteArray)key).getTrimmedArray();
 		
 		try {
 			byte [] value = db.get(handle, keyarr);
+			if (value == null) {
+				return null;
+			} 
 			return new ByteArray(value);
 		} catch (RocksDBException e) {
 			throw new StoreException(e);

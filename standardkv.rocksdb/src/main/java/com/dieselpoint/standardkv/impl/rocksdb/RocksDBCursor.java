@@ -4,8 +4,9 @@ import org.rocksdb.ColumnFamilyHandle;
 import org.rocksdb.RocksDB;
 import org.rocksdb.RocksIterator;
 
-import com.dieselpoint.standardkv.ByteArray;
-import com.dieselpoint.standardkv.ByteSpan;
+import com.dieselpoint.buffers.Buffer;
+import com.dieselpoint.buffers.ByteArray;
+import com.dieselpoint.buffers.ByteSpan;
 import com.dieselpoint.standardkv.Cursor;
 
 
@@ -19,14 +20,14 @@ public class RocksDBCursor implements Cursor {
 	}
 	
 	@Override
-	public void seek(ByteSpan key) {
+	public void seek(Buffer key) {
 		
 		// TODO this is temporary. stupidly, rocks doesn't expose a keylen param in .seek()
 		ByteArray keyLocal = (ByteArray) key;
 		byte [] arr = keyLocal.getTrimmedArray();
 		
 		iterator.seek(arr);
-		beforeFirst = false;
+		beforeFirst = false; 
 	}
 
 	@Override
@@ -50,13 +51,19 @@ public class RocksDBCursor implements Cursor {
 		beforeFirst = true;
 	}
 
+
 	@Override
-	public ByteSpan getKey() {
+	public void last() {
+		iterator.seekToLast();
+	}
+	
+	@Override
+	public Buffer getKey() {
 		return new ByteArray(iterator.key());
 	}
 
 	@Override
-	public ByteSpan getValue() {
+	public Buffer getValue() {
 		return new ByteArray(iterator.value());
 	}
 
@@ -64,5 +71,6 @@ public class RocksDBCursor implements Cursor {
 	public boolean isEOF() {
 		return !iterator.isValid();
 	}
+
 
 }

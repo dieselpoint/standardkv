@@ -1,9 +1,11 @@
 package com.dieselpoint.standardkv;
 
+import com.dieselpoint.buffers.Buffer;
+
 public interface WriteBatch {
 	
-	public void put(ByteSpan key, ByteSpan value);
+	public void put(Buffer key, Buffer value);
 	
-	public void remove(ByteSpan key);
+	public void remove(Buffer key);
 	
 }

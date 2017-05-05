@@ -13,7 +13,7 @@ import org.rocksdb.RocksDB;
 import org.rocksdb.RocksDBException;
 import org.rocksdb.RocksIterator;
 
-import com.dieselpoint.standardkv.Util;
+import com.dieselpoint.util.FileUtil;
 
 public class Test {
 
@@ -31,7 +31,7 @@ public class Test {
 	}
 	
 	private void test1() throws RocksDBException, IOException {
-		Util.deleteDir(db_path);
+		FileUtil.deleteDir(db_path);
 		
 		Options options = new Options();
 		options.setCreateIfMissing(true);
@@ -51,7 +51,7 @@ public class Test {
 	}
 	
 	private void test2() throws RocksDBException, IOException {
-		Util.deleteDir(db_path);
+		FileUtil.deleteDir(db_path);
 		
 		BlockBasedTableConfig tableOptions = new BlockBasedTableConfig();
 		tableOptions
@@ -86,7 +86,7 @@ public class Test {
 	
 	private void test3() throws RocksDBException, IOException {
 		
-		Util.deleteDir(db_path);
+		FileUtil.deleteDir(db_path);
 		
 		Options options = new Options();
 		options.setCreateIfMissing(true);

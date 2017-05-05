@@ -3,8 +3,9 @@ package com.dieselpoint.standardkv.impl.memdb;
 import java.util.List;
 import java.util.concurrent.ConcurrentSkipListMap;
 
-import com.dieselpoint.standardkv.ByteArray;
-import com.dieselpoint.standardkv.ByteSpan;
+import com.dieselpoint.buffers.Buffer;
+import com.dieselpoint.buffers.ByteArray;
+import com.dieselpoint.buffers.ByteSpan;
 import com.dieselpoint.standardkv.Cursor;
 import com.dieselpoint.standardkv.Table;
 import com.dieselpoint.standardkv.WriteBatch;
@@ -16,7 +17,7 @@ public class MemDBTable implements Table {
 	 * This map implementationis fast for get, put, and remove. It does not provide isolation, though.
 	 * Modifications will show up while you're iterating.
 	 */
-	private ConcurrentSkipListMap<ByteSpan, ByteSpan> map = new ConcurrentSkipListMap();
+	private ConcurrentSkipListMap<Buffer, Buffer> map = new ConcurrentSkipListMap();
 
 	public MemDBTable(String name) {
 	}
@@ -30,7 +31,7 @@ public class MemDBTable implements Table {
 	}
 
 	@Override
-	public void put(ByteSpan key, ByteSpan value) {
+	public void put(Buffer key, Buffer value) {
 		// must make copies
 		ByteArray keyCopy = new ByteArray(key.size());
 		keyCopy.append(key);
@@ -42,7 +43,7 @@ public class MemDBTable implements Table {
 	}
 
 	@Override
-	public void remove(ByteSpan key) {
+	public void remove(Buffer key) {
 		map.remove(key);
 	}
 
@@ -54,6 +55,11 @@ public class MemDBTable implements Table {
 	@Override
 	public WriteBatch newWriteBatch() {
 		return new MemDBWriteBatch();
+	}
+
+	@Override
+	public Buffer get(Buffer key) {
+		return map.get(key);
 	}
 
 	

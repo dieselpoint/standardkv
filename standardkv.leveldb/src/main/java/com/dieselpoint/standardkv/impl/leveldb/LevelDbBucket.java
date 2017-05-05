@@ -6,11 +6,12 @@ import java.util.concurrent.ConcurrentHashMap;
 import org.iq80.leveldb.DB;
 import org.iq80.leveldb.DBIterator;
 
+import com.dieselpoint.buffers.ByteArray;
 import com.dieselpoint.standardkv.Bucket;
-import com.dieselpoint.standardkv.ByteArray;
 import com.dieselpoint.standardkv.StoreException;
 import com.dieselpoint.standardkv.Table;
 import com.dieselpoint.standardkv.Util;
+import com.dieselpoint.util.CommonUtil;
 
 public class LevelDbBucket implements Bucket {
 
@@ -20,7 +21,7 @@ public class LevelDbBucket implements Bucket {
 	private ConcurrentHashMap<String, Table> tables = new ConcurrentHashMap<String, Table>();
 
 	public LevelDbBucket(DB db, String bucketName) {
-		if (!Util.isAllLettersOrDigits(bucketName)) {
+		if (!CommonUtil.isAllLettersOrDigits(bucketName)) {
 			throw new StoreException("bucketName must consist of letters and digits only");
 		}
 		this.db = db;

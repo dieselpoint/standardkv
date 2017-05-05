@@ -1,16 +1,21 @@
 package com.dieselpoint.standardkv;
 
+import com.dieselpoint.buffers.Buffer;
+
+
 public interface Cursor {
 
 	public void beforeFirst();
 	
-	public void seek(ByteSpan key);
+	public void last();
+	
+	public void seek(Buffer key);
 	
 	public boolean next();
 
-	public ByteSpan getKey();
+	public Buffer getKey();
 	
-	public ByteSpan getValue();
+	public Buffer getValue();
 	
 	public boolean isEOF();
 

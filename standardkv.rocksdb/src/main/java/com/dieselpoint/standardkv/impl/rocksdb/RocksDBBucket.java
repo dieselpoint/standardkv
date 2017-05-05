@@ -20,6 +20,7 @@ import com.dieselpoint.standardkv.Bucket;
 import com.dieselpoint.standardkv.StoreException;
 import com.dieselpoint.standardkv.Table;
 import com.dieselpoint.standardkv.Util;
+import com.dieselpoint.util.FileUtil;
 
 
 public class RocksDBBucket implements Bucket {
@@ -126,7 +127,7 @@ public class RocksDBBucket implements Bucket {
 	public void delete() {
 		db.close();
 		try {
-			Util.deleteDir(path);
+			FileUtil.deleteDir(path);
 		} catch (IOException e) {
 			throw new StoreException(e);
 		}

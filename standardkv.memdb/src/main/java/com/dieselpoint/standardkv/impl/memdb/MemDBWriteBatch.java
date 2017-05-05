@@ -3,16 +3,15 @@ package com.dieselpoint.standardkv.impl.memdb;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.dieselpoint.standardkv.ByteSpan;
+import com.dieselpoint.buffers.Buffer;
 import com.dieselpoint.standardkv.WriteBatch;
 
 public class MemDBWriteBatch implements WriteBatch {
 	
-	private List<Pair> list = new ArrayList();
-	
+	private List<Pair> list = new ArrayList<>();
 
 	@Override
-	public void put(ByteSpan key, ByteSpan value) {
+	public void put(Buffer key, Buffer value) {
 		Pair pair = new Pair();
 		pair.key = key;
 		pair.value = value;
@@ -20,7 +19,7 @@ public class MemDBWriteBatch implements WriteBatch {
 	}
 
 	@Override
-	public void remove(ByteSpan key) {
+	public void remove(Buffer key) {
 		put(key, null);
 	}
 	
@@ -30,7 +29,7 @@ public class MemDBWriteBatch implements WriteBatch {
 	
 
 	public static class Pair {
-		ByteSpan key;
-		ByteSpan value;
+		Buffer key;
+		Buffer value;
 	}
 }

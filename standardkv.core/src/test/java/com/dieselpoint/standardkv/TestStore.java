@@ -4,6 +4,8 @@ import java.io.UnsupportedEncodingException;
 
 import org.junit.Test;
 
+import com.dieselpoint.buffers.ByteArray;
+
 
 public class TestStore {
 
@@ -28,12 +30,12 @@ public class TestStore {
 		curs.seek(new ByteArray("fo"));
 		
 		while (curs.next()) {
-			System.out.println("key:" + curs.getKey().getString() + " value:" + curs.getValue().getString());
+			System.out.println("key:" + curs.getKey().readUtf8String() + " value:" + curs.getValue().readUtf8String());
 		}
 		
 		Cursor c = table.newCursor();
 		while (c.next()) {
-			System.out.println("key:" + c.getKey().getString());
+			System.out.println("key:" + c.getKey().readUtf8String());
 		}
 		
 		bucket.delete();

@@ -4,17 +4,17 @@ import java.util.Iterator;
 import java.util.Map.Entry;
 import java.util.concurrent.ConcurrentSkipListMap;
 
-import com.dieselpoint.standardkv.ByteSpan;
+import com.dieselpoint.buffers.Buffer;
 import com.dieselpoint.standardkv.Cursor;
 
 
 public class MemDBCursor implements Cursor {
 	
-	private ConcurrentSkipListMap<ByteSpan, ByteSpan> map;	
-	private Iterator<Entry<ByteSpan, ByteSpan>> it;
-	private Entry<ByteSpan, ByteSpan> entry;
+	private ConcurrentSkipListMap<Buffer, Buffer> map;	
+	private Iterator<Entry<Buffer, Buffer>> it;
+	private Entry<Buffer, Buffer> entry;
 	
-	public MemDBCursor(ConcurrentSkipListMap<ByteSpan, ByteSpan> map) {
+	public MemDBCursor(ConcurrentSkipListMap<Buffer, Buffer> map) {
 		this.map = map;
 	}
 
@@ -25,7 +25,7 @@ public class MemDBCursor implements Cursor {
 	}
 
 	@Override
-	public void seek(ByteSpan key) {
+	public void seek(Buffer key) {
 		it = map.tailMap(key).entrySet().iterator();
 		next();
 	}
@@ -40,12 +40,12 @@ public class MemDBCursor implements Cursor {
 	}
 
 	@Override
-	public ByteSpan getKey() {
+	public Buffer getKey() {
 		return entry.getKey();
 	}
 
 	@Override
-	public ByteSpan getValue() {
+	public Buffer getValue() {
 		return entry.getValue();
 	}
 
@@ -59,6 +59,12 @@ public class MemDBCursor implements Cursor {
 
 	@Override
 	public void close() {
+	}
+
+	@Override
+	public void last() {
+		entry = map.lastEntry();
+		it = map.tailMap(entry.getKey(), true).entrySet().iterator();
 	}
 
 }
