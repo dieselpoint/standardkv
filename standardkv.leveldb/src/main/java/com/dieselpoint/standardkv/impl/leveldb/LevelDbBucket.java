@@ -32,7 +32,7 @@ public class LevelDbBucket implements Bucket {
 	public void delete() {
 
 		ByteArray keyBuf = new ByteArray();
-		keyBuf.append(bucketName);
+		keyBuf.appendString(bucketName);
 		keyBuf.appendByte(LevelDbTable.DOT);
 		byte[] prefix = keyBuf.getTrimmedArray();
 		int prefixLen = prefix.length;

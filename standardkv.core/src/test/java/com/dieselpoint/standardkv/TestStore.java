@@ -30,12 +30,12 @@ public class TestStore {
 		curs.seek(new ByteArray("fo"));
 		
 		while (curs.next()) {
-			System.out.println("key:" + curs.getKey().readUtf8String() + " value:" + curs.getValue().readUtf8String());
+			System.out.println("key:" + curs.getKey().readString() + " value:" + curs.getValue().readString());
 		}
 		
 		Cursor c = table.newCursor();
 		while (c.next()) {
-			System.out.println("key:" + c.getKey().readUtf8String());
+			System.out.println("key:" + c.getKey().readString());
 		}
 		
 		bucket.delete();

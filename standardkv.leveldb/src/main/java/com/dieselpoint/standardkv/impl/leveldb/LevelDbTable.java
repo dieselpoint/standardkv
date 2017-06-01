@@ -21,9 +21,9 @@ public class LevelDbTable implements Table {
 	
 	public LevelDbTable(DB db, String bucketName, String tableName) {
 		this.db = db;
-		keyBuf.append(bucketName);
+		keyBuf.appendString(bucketName);
 		keyBuf.appendByte(DOT);
-		keyBuf.append(tableName);
+		keyBuf.appendString(tableName);
 		keyBuf.appendByte(DOT);
 		keyPrefixLen = keyBuf.size();
 	}

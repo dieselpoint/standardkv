@@ -32,13 +32,13 @@ public class TestColumnFamilies {
 		Cursor curs0 = table0.newCursor();
 		curs0.beforeFirst();
 		while (curs0.next()) {
-			System.out.println(curs0.getKey().readUtf8String() + " " + curs0.getValue().readUtf8String());
+			System.out.println(curs0.getKey().readString() + " " + curs0.getValue().readString());
 		}
 		
 		Cursor curs1 = table1.newCursor();
 		curs1.beforeFirst();
 		while (curs1.next()) {
-			System.out.println(curs1.getKey().readUtf8String() + " " + curs1.getValue().readUtf8String());
+			System.out.println(curs1.getKey().readString() + " " + curs1.getValue().readString());
 		}
 		
 	}
