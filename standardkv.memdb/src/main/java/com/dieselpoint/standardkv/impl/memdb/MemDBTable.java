@@ -5,7 +5,6 @@ import java.util.concurrent.ConcurrentSkipListMap;
 
 import com.dieselpoint.buffers.Buffer;
 import com.dieselpoint.buffers.ByteArray;
-import com.dieselpoint.buffers.ByteSpan;
 import com.dieselpoint.standardkv.Cursor;
 import com.dieselpoint.standardkv.Table;
 import com.dieselpoint.standardkv.WriteBatch;
@@ -34,10 +33,10 @@ public class MemDBTable implements Table {
 	public void put(Buffer key, Buffer value) {
 		// must make copies
 		ByteArray keyCopy = new ByteArray(key.size());
-		keyCopy.append(key);
+		keyCopy.appendBuffer(key);
 		
 		ByteArray valueCopy = new ByteArray(value.size());
-		valueCopy.append(value);
+		valueCopy.appendBuffer(value);
 		
 		map.put(keyCopy, valueCopy);
 	}
