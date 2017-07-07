@@ -103,5 +103,9 @@ public class RocksDBTable implements Table {
 		}
 	}
 
+	public void close() {
+		// see RocksDBBucket.close() for the reason for this
+		handle.close();
+	}
 	
 }

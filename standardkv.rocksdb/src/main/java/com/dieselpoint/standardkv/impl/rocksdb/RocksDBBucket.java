@@ -29,7 +29,7 @@ public class RocksDBBucket implements Bucket {
 	
 	private RocksDB db;
 	private String path;
-	private ConcurrentHashMap<String, Table> tables = new ConcurrentHashMap<String, Table>();
+	private ConcurrentHashMap<String, RocksDBTable> tables = new ConcurrentHashMap<>();
 	private ColumnFamilyOptions cfo = this.getColumnFamilyOptions();
 	
 	
@@ -80,6 +80,12 @@ public class RocksDBBucket implements Bucket {
 
 	@Override
 	public void close() {
+		// must explicitly close columnfamilyhandles per
+		// https://github.com/facebook/rocksdb/issues/1080
+		// https://github.com/facebook/rocksdb/issues/974
+		for (RocksDBTable table: tables.values()) {
+			table.close();
+		}
 		db.close();
 	}
 	
