@@ -4,7 +4,9 @@ import java.util.concurrent.ConcurrentHashMap;
 
 import com.dieselpoint.standardkv.Bucket;
 import com.dieselpoint.standardkv.Table;
+import com.dieselpoint.standardkv.Transaction;
 import com.dieselpoint.standardkv.Util;
+import com.dieselpoint.standardkv.WriteBatch;
 
 public class MemDBBucket implements Bucket {
 
@@ -35,6 +37,24 @@ public class MemDBBucket implements Bucket {
 		Util.checkForLegalName(tableName);
 		MemDBTable table = new MemDBTable(tableName);
 		return table;
+	}
+
+	@Override
+	public Transaction startTransaction() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public void write(WriteBatch batch) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public WriteBatch newWriteBatch() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }

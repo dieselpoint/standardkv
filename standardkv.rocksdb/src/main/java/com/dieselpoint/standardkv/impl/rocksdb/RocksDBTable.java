@@ -10,6 +10,7 @@ import com.dieselpoint.buffers.ByteArray;
 import com.dieselpoint.standardkv.Cursor;
 import com.dieselpoint.standardkv.StoreException;
 import com.dieselpoint.standardkv.Table;
+import com.dieselpoint.standardkv.Transaction;
 import com.dieselpoint.standardkv.WriteBatch;
 import com.dieselpoint.util.CommonUtil;
 
@@ -17,7 +18,7 @@ public class RocksDBTable implements Table {
 
 	private RocksDB db;
 	private ColumnFamilyHandle handle;
-	private WriteOptions wo = new WriteOptions();
+
 
 	public RocksDBTable(RocksDB db, String tableName, ColumnFamilyHandle handle) {
 		
@@ -51,14 +52,6 @@ public class RocksDBTable implements Table {
 		return new RocksDBCursor(db, handle);
 	}
 
-	@Override
-	public void write(WriteBatch batch) {
-		try {
-			db.write(wo, ((RocksDBWriteBatch)batch).getInternalWB());
-		} catch (RocksDBException e) {
-			throw new StoreException(e);
-		}
-	}
 
 	@Override
 	public void remove(Buffer key) {
@@ -71,11 +64,6 @@ public class RocksDBTable implements Table {
 		} catch (RocksDBException e) {
 			throw new StoreException(e);
 		}
-	}
-
-	@Override
-	public WriteBatch newWriteBatch() {
-		return new RocksDBWriteBatch(handle);
 	}
 
 	public void compact() {
@@ -107,5 +95,25 @@ public class RocksDBTable implements Table {
 		// see RocksDBBucket.close() for the reason for this
 		handle.close();
 	}
+	
+	protected ColumnFamilyHandle getHandle() {
+		return handle;
+	}
+
+	@Override
+	public void put(Transaction trans, Buffer key, Buffer value) {
+		throw new UnsupportedOperationException();
+	}
+
+	@Override
+	public Buffer get(Transaction trans, Buffer key) {
+		throw new UnsupportedOperationException();
+	}
+
+	@Override
+	public void remove(Transaction trans, Buffer key) {
+		throw new UnsupportedOperationException();
+	}
+	
 	
 }

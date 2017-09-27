@@ -4,8 +4,8 @@ import com.dieselpoint.buffers.Buffer;
 
 public interface WriteBatch {
 	
-	public void put(Buffer key, Buffer value);
+	public void put(Table table, Buffer key, Buffer value);
 	
-	public void remove(Buffer key);
+	public void remove(Table table, Buffer key);
 	
 }

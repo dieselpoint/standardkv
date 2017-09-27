@@ -10,7 +10,9 @@ import com.dieselpoint.buffers.ByteArray;
 import com.dieselpoint.standardkv.Bucket;
 import com.dieselpoint.standardkv.StoreException;
 import com.dieselpoint.standardkv.Table;
+import com.dieselpoint.standardkv.Transaction;
 import com.dieselpoint.standardkv.Util;
+import com.dieselpoint.standardkv.WriteBatch;
 import com.dieselpoint.util.CommonUtil;
 
 public class LevelDbBucket implements Bucket {
@@ -74,6 +76,24 @@ public class LevelDbBucket implements Bucket {
 	private LevelDbTable createTable(String tableName) {
 		Util.checkForLegalName(tableName);
 		return new LevelDbTable(db, bucketName, tableName);
+	}
+
+	@Override
+	public Transaction startTransaction() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public void write(WriteBatch batch) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public WriteBatch newWriteBatch() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }

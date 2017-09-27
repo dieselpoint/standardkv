@@ -12,6 +12,7 @@
 		<module>standardkv.rocksdb</module>
 		<module>standardkv.memdb</module>
 		<module>standardkv.leveldb</module>
+		<module>standardkv.test</module>
 	</modules>
 
 	<description>A standard interface over a key/value store.</description>

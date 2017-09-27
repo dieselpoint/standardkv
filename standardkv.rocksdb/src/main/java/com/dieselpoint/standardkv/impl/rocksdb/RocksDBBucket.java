@@ -15,11 +15,14 @@ import org.rocksdb.DBOptions;
 import org.rocksdb.Options;
 import org.rocksdb.RocksDB;
 import org.rocksdb.RocksDBException;
+import org.rocksdb.WriteOptions;
 
 import com.dieselpoint.standardkv.Bucket;
 import com.dieselpoint.standardkv.StoreException;
 import com.dieselpoint.standardkv.Table;
+import com.dieselpoint.standardkv.Transaction;
 import com.dieselpoint.standardkv.Util;
+import com.dieselpoint.standardkv.WriteBatch;
 import com.dieselpoint.util.FileUtil;
 
 
@@ -31,17 +34,17 @@ public class RocksDBBucket implements Bucket {
 	private String path;
 	private ConcurrentHashMap<String, RocksDBTable> tables = new ConcurrentHashMap<>();
 	private ColumnFamilyOptions cfo = this.getColumnFamilyOptions();
-	
+	private WriteOptions wo = new WriteOptions();
 	
 	public RocksDBBucket(String rootDir, String bucketName) {
-
+		
 		Util.checkForLegalName(bucketName);
 
 		File pathFile = new File(rootDir, bucketName);
 		pathFile.mkdirs();
 		
 		this.path = pathFile.getAbsolutePath();
-		
+	
 		try {
 			// may as well open all tables now. can revisit later.
 			List<byte[]> colFamNames = RocksDB.listColumnFamilies(new Options(), path);
@@ -138,6 +141,27 @@ public class RocksDBBucket implements Bucket {
 			throw new StoreException(e);
 		}
 	}
+
+	@Override
+	public Transaction startTransaction() {
+		throw new UnsupportedOperationException();
+	}
+
+
+	@Override
+	public void write(WriteBatch batch) {
+		try {
+			db.write(wo, ((RocksDBWriteBatch)batch).getInternalWB());
+		} catch (RocksDBException e) {
+			throw new StoreException(e);
+		}
+	}
+
+	@Override
+	public WriteBatch newWriteBatch() {
+		return new RocksDBWriteBatch();
+	}
+	
 	
 
 }

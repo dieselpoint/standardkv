@@ -14,7 +14,7 @@ public class StoreFactory {
 	 * "className" parameter, or use one of the predefined classname constants in this class, for example,
 	 * StoreFactory.ROCKSDB.
 	 * 
-	 * @param storeInitString a Store implementation-specific string. Usually just a database name.
+	 * @param storeInitString a Store implementation-specific string. Could be a path to the data.
 	 * @param className name of a class that implements com.dieselpoint.standardkv.Store
 	 * @return the Store object
 	 */

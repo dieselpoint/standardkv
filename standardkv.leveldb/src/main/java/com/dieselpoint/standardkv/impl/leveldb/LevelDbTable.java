@@ -7,6 +7,7 @@ import com.dieselpoint.buffers.ByteArray;
 import com.dieselpoint.buffers.ByteSpan;
 import com.dieselpoint.standardkv.Cursor;
 import com.dieselpoint.standardkv.Table;
+import com.dieselpoint.standardkv.Transaction;
 import com.dieselpoint.standardkv.WriteBatch;
 
 
@@ -36,21 +37,6 @@ public class LevelDbTable implements Table {
 	}
 
 
-	@Override
-	public void write(WriteBatch batch) {
-		// TODO Auto-generated method stub
-		
-	}
-
-
-
-
-	@Override
-	public WriteBatch newWriteBatch() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
 
 
 
@@ -75,6 +61,30 @@ public class LevelDbTable implements Table {
 	public Buffer get(Buffer key) {
 		// TODO Auto-generated method stub
 		return null;
+	}
+
+
+
+	@Override
+	public void put(Transaction trans, Buffer key, Buffer value) {
+		// TODO Auto-generated method stub
+		
+	}
+
+
+
+	@Override
+	public Buffer get(Transaction trans, Buffer key) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+
+
+	@Override
+	public void remove(Transaction trans, Buffer key) {
+		// TODO Auto-generated method stub
+		
 	}
 
 

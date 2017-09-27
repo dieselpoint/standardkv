@@ -31,12 +31,9 @@ public class RocksDBStore implements Store {
 	static {
 		RocksDB.loadLibrary();
 	}
-	
-	//private Logger logger = LoggerFactory.getLogger(getClass());
+
 	private String rootDir;
 	private ConcurrentHashMap<String, RocksDBBucket> buckets = new ConcurrentHashMap<String, RocksDBBucket>();
-	
-	
 	
 	public void init(String dir) {
 		rootDir = dir;
@@ -53,8 +50,7 @@ public class RocksDBStore implements Store {
 	
 	private RocksDBBucket createBucket(String bucketName) {
 		return new RocksDBBucket(rootDir, bucketName);
-	}
-	
+	}	
 
 	@Override
 	public void close() {

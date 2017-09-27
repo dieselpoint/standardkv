@@ -7,6 +7,7 @@ import com.dieselpoint.buffers.Buffer;
 import com.dieselpoint.buffers.ByteArray;
 import com.dieselpoint.standardkv.Cursor;
 import com.dieselpoint.standardkv.Table;
+import com.dieselpoint.standardkv.Transaction;
 import com.dieselpoint.standardkv.WriteBatch;
 import com.dieselpoint.standardkv.impl.memdb.MemDBWriteBatch.Pair;
 
@@ -21,6 +22,7 @@ public class MemDBTable implements Table {
 	public MemDBTable(String name) {
 	}
 
+	/*
 	@Override
 	public void write(WriteBatch batch) {
 		List<Pair> list = ((MemDBWriteBatch)batch).getList();
@@ -28,6 +30,7 @@ public class MemDBTable implements Table {
 			put(pair.key, pair.value);
 		}
 	}
+	*/
 
 	@Override
 	public void put(Buffer key, Buffer value) {
@@ -51,14 +54,34 @@ public class MemDBTable implements Table {
 		return new MemDBCursor(map);
 	}
 
+	/*
 	@Override
 	public WriteBatch newWriteBatch() {
 		return new MemDBWriteBatch();
 	}
+	*/
 
 	@Override
 	public Buffer get(Buffer key) {
 		return map.get(key);
+	}
+
+	@Override
+	public void put(Transaction trans, Buffer key, Buffer value) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public Buffer get(Transaction trans, Buffer key) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public void remove(Transaction trans, Buffer key) {
+		// TODO Auto-generated method stub
+		
 	}
 
 	
