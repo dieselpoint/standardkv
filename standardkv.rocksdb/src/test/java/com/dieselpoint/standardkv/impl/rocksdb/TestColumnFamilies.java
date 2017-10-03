@@ -7,7 +7,7 @@ import org.junit.Test;
 import com.dieselpoint.buffers.ByteArray;
 import com.dieselpoint.standardkv.Bucket;
 import com.dieselpoint.standardkv.Cursor;
-import com.dieselpoint.standardkv.Table;
+import com.dieselpoint.standardkv.KVTable;
 
 public class TestColumnFamilies {
 
@@ -20,12 +20,12 @@ public class TestColumnFamilies {
 		// then cursor through them
 		
 		Bucket bucket0 = store.getBucket("bucket0", true);
-		Table table0 = bucket0.getTable("tbl0", true);
+		KVTable table0 = bucket0.getTable("tbl0", true);
 		table0.put(new ByteArray("t0k0"), new ByteArray("t0v0"));
 		table0.put(new ByteArray("t0k1"), new ByteArray("t0v1"));
 		
 		Bucket bucket1 = store.getBucket("bucket1", true);
-		Table table1 = bucket1.getTable("tbl1", true);
+		KVTable table1 = bucket1.getTable("tbl1", true);
 		table1.put(new ByteArray("t1k0"), new ByteArray("t1v0"));
 		table1.put(new ByteArray("t1k1"), new ByteArray("t1v1"));
 		

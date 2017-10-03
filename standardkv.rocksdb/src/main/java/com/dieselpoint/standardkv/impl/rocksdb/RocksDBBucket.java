@@ -2,6 +2,7 @@ package com.dieselpoint.standardkv.impl.rocksdb;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
@@ -19,7 +20,7 @@ import org.rocksdb.WriteOptions;
 
 import com.dieselpoint.standardkv.Bucket;
 import com.dieselpoint.standardkv.StoreException;
-import com.dieselpoint.standardkv.Table;
+import com.dieselpoint.standardkv.KVTable;
 import com.dieselpoint.standardkv.Transaction;
 import com.dieselpoint.standardkv.Util;
 import com.dieselpoint.standardkv.WriteBatch;
@@ -46,7 +47,15 @@ public class RocksDBBucket implements Bucket {
 		this.path = pathFile.getAbsolutePath();
 	
 		try {
-			// may as well open all tables now. can revisit later.
+
+			/* Bizarrely, you can't open a db at all unless you specify all the columnFamily names.
+			 * https://github.com/facebook/rocksdb/wiki/Column-Families
+			 * "When opening a DB in a read-write mode, you need to specify all Column Families 
+			 * that currently exist in a DB. If that's not the case, DB::Open 
+			 * call will return Status::InvalidArgument()."
+			 * This is still true as of version 5.7.3.
+			 */
+			
 			List<byte[]> colFamNames = RocksDB.listColumnFamilies(new Options(), path);
 			ArrayList<ColumnFamilyDescriptor> descriptors = new ArrayList<ColumnFamilyDescriptor>();
 			ArrayList<ColumnFamilyHandle> handles = new ArrayList<ColumnFamilyHandle>();
@@ -74,13 +83,28 @@ public class RocksDBBucket implements Bucket {
 				String tableName = new String(desc.columnFamilyName(), StandardCharsets.UTF_8);
 				tables.put(tableName, new RocksDBTable(db, tableName, handle));
 			}
-			
 
 		} catch (RocksDBException e) {
 			throw new StoreException(e);
 		}
 	}
 
+
+	@Override
+	public List<String> getTableNames() {
+		List<String> out = new ArrayList<>();
+		try {
+			List<byte[]> colFamNames = RocksDB.listColumnFamilies(new Options(), path);
+			for (byte [] colFamName: colFamNames) {
+				out.add(new String(colFamName, "UTF-8"));
+			}
+		} catch (RocksDBException | UnsupportedEncodingException e) {
+			throw new StoreException(e);
+		}
+		return out;
+	}
+	
+	
 	@Override
 	public void close() {
 		// must explicitly close columnfamilyhandles per
@@ -94,14 +118,13 @@ public class RocksDBBucket implements Bucket {
 	
 	
 	@Override
-	public Table getTable(String tableName, boolean createIfNecessary) {
+	public KVTable getTable(String tableName, boolean createIfNecessary) {
 		if (createIfNecessary) {
 			return tables.computeIfAbsent(tableName, k -> createTable(tableName));
 		} else {
 			return tables.get(tableName);
 		}
 	}
-
 	
 	private RocksDBTable createTable(String tableName) {
 		try {
@@ -161,7 +184,25 @@ public class RocksDBBucket implements Bucket {
 	public WriteBatch newWriteBatch() {
 		return new RocksDBWriteBatch();
 	}
-	
+
+
+	@Override
+	public void dropTable(String name) {
+		RocksDBTable table = tables.get(name);
+		if (table == null) {
+			throw new StoreException("Table doesn't exist:" + name);
+		}
+		tables.remove(name);
+		try {
+			db.dropColumnFamily(table.getHandle());
+		} catch (IllegalArgumentException | RocksDBException e) {
+			throw new StoreException(e);
+		}
+	}
+
+	public static boolean exists(String rootDir, String bucketName) {
+		return (new File(rootDir, bucketName)).exists();
+	}	
 	
 
 }

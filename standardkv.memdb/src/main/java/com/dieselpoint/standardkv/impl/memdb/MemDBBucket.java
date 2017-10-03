@@ -3,7 +3,7 @@ package com.dieselpoint.standardkv.impl.memdb;
 import java.util.concurrent.ConcurrentHashMap;
 
 import com.dieselpoint.standardkv.Bucket;
-import com.dieselpoint.standardkv.Table;
+import com.dieselpoint.standardkv.KVTable;
 import com.dieselpoint.standardkv.Transaction;
 import com.dieselpoint.standardkv.Util;
 import com.dieselpoint.standardkv.WriteBatch;
@@ -25,7 +25,7 @@ public class MemDBBucket implements Bucket {
 	}
 
 	@Override
-	public Table getTable(String tableName, boolean createIfNecessary) {
+	public KVTable getTable(String tableName, boolean createIfNecessary) {
 		if (createIfNecessary) {
 			return tables.computeIfAbsent(tableName, k -> createTable(tableName));
 		} else {

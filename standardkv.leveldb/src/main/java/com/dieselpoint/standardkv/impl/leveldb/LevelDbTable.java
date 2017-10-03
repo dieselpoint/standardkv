@@ -6,12 +6,12 @@ import com.dieselpoint.buffers.Buffer;
 import com.dieselpoint.buffers.ByteArray;
 import com.dieselpoint.buffers.ByteSpan;
 import com.dieselpoint.standardkv.Cursor;
-import com.dieselpoint.standardkv.Table;
+import com.dieselpoint.standardkv.KVTable;
 import com.dieselpoint.standardkv.Transaction;
 import com.dieselpoint.standardkv.WriteBatch;
 
 
-public class LevelDbTable implements Table {
+public class LevelDbTable implements KVTable {
 	
 	public static final byte DOT = '.';
 	

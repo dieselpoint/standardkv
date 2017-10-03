@@ -19,9 +19,8 @@ public class RocksDBStore implements Store {
 	 * Fortunately, there are changes being checked in every day in the rocksdb project.
 	 * So, let's wait for them to fix these things:
 	 * 
-	 * 1. Windows compilation, and include the dll in the jar file.
-	 * 2. Expose slices.
-	 * 3. Make it easier to do dynamic column families. Right now discovering existing col families is difficult
+	 * 1. Expose slices.
+	 * 2. Make it easier to do dynamic column families. Right now discovering existing col families is difficult
 	 * because of the inconsistency in the way Options and DBOptions are handled.	  
 	 * 
 	 * An alternative would be to create a completely new Java project with
@@ -41,15 +40,15 @@ public class RocksDBStore implements Store {
 
 	@Override
 	public Bucket getBucket(String bucketName, boolean createIfNecessary) {
-		if (createIfNecessary) {
-			return buckets.computeIfAbsent(bucketName, k -> createBucket(bucketName));
-		} else {
-			return buckets.get(bucketName);
-		}
+		return buckets.computeIfAbsent(bucketName, k -> openBucket(bucketName, createIfNecessary));
 	}
 	
-	private RocksDBBucket createBucket(String bucketName) {
-		return new RocksDBBucket(rootDir, bucketName);
+	private RocksDBBucket openBucket(String bucketName, boolean createIfNecessary) {
+		if (createIfNecessary || RocksDBBucket.exists(rootDir, bucketName)) {
+			return new RocksDBBucket(rootDir, bucketName);
+		} else {
+			return null;
+		}
 	}	
 
 	@Override

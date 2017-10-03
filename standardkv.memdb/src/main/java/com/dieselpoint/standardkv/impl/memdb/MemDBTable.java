@@ -6,12 +6,12 @@ import java.util.concurrent.ConcurrentSkipListMap;
 import com.dieselpoint.buffers.Buffer;
 import com.dieselpoint.buffers.ByteArray;
 import com.dieselpoint.standardkv.Cursor;
-import com.dieselpoint.standardkv.Table;
+import com.dieselpoint.standardkv.KVTable;
 import com.dieselpoint.standardkv.Transaction;
 import com.dieselpoint.standardkv.WriteBatch;
 import com.dieselpoint.standardkv.impl.memdb.MemDBWriteBatch.Pair;
 
-public class MemDBTable implements Table {
+public class MemDBTable implements KVTable {
 	
 	/*
 	 * This map implementationis fast for get, put, and remove. It does not provide isolation, though.

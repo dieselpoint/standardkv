@@ -2,7 +2,7 @@ package com.dieselpoint.standardkv;
 
 import com.dieselpoint.buffers.Buffer;
 
-public interface Table {
+public interface KVTable {
 	
 	public void put(Buffer key, Buffer value);
 

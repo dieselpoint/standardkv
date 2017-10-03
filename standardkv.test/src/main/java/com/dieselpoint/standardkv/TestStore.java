@@ -15,7 +15,7 @@ abstract public class TestStore {
 		Store store = getStore();
 		
 		Bucket bucket = store.getBucket("mybucket", true);
-		Table table = bucket.getTable("footable", true);
+		KVTable table = bucket.getTable("footable", true);
 		
 		table.put(new ByteArray("aa"), new ByteArray("a_value"));
 		table.put(new ByteArray("foo"), new ByteArray("bar"));

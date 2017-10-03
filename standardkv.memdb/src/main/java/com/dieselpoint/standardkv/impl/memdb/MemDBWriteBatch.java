@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.dieselpoint.buffers.Buffer;
-import com.dieselpoint.standardkv.Table;
+import com.dieselpoint.standardkv.KVTable;
 import com.dieselpoint.standardkv.WriteBatch;
 
 public class MemDBWriteBatch implements WriteBatch {
@@ -38,13 +38,13 @@ public class MemDBWriteBatch implements WriteBatch {
 
 
 	@Override
-	public void put(Table table, Buffer key, Buffer value) {
+	public void put(KVTable table, Buffer key, Buffer value) {
 		// TODO Auto-generated method stub
 		
 	}
 
 	@Override
-	public void remove(Table table, Buffer key) {
+	public void remove(KVTable table, Buffer key) {
 		// TODO Auto-generated method stub
 		
 	}

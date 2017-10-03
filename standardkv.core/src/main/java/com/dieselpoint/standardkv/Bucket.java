@@ -1,12 +1,24 @@
 package com.dieselpoint.standardkv;
 
+import java.util.List;
+
 public interface Bucket {
-	
+
+	/**
+	 * Get a list of the tables in this bucket. Returns an 
+	 * empty list if there aren't any.
+	 */
+	public List<String> getTableNames();
 	
 	/**
 	 * Get a reference to a table. Returns null if it does not exist.
 	 */
-	public Table getTable(String name, boolean createIfNecessary);
+	public KVTable getTable(String name, boolean createIfNecessary);
+	
+	/**
+	 * Delete a table.
+	 */
+	public void dropTable(String name);
 
 	/**
 	 * Create a new transaction.

@@ -9,7 +9,7 @@ import org.iq80.leveldb.DBIterator;
 import com.dieselpoint.buffers.ByteArray;
 import com.dieselpoint.standardkv.Bucket;
 import com.dieselpoint.standardkv.StoreException;
-import com.dieselpoint.standardkv.Table;
+import com.dieselpoint.standardkv.KVTable;
 import com.dieselpoint.standardkv.Transaction;
 import com.dieselpoint.standardkv.Util;
 import com.dieselpoint.standardkv.WriteBatch;
@@ -20,7 +20,7 @@ public class LevelDbBucket implements Bucket {
 	private DB db;
 	private String bucketName;
 
-	private ConcurrentHashMap<String, Table> tables = new ConcurrentHashMap<String, Table>();
+	private ConcurrentHashMap<String, KVTable> tables = new ConcurrentHashMap<String, KVTable>();
 
 	public LevelDbBucket(DB db, String bucketName) {
 		if (!CommonUtil.isAllLettersOrDigits(bucketName)) {
@@ -65,7 +65,7 @@ public class LevelDbBucket implements Bucket {
 	}
 
 	@Override
-	public Table getTable(String tableName, boolean createIfNecessary) {
+	public KVTable getTable(String tableName, boolean createIfNecessary) {
 		if (createIfNecessary) {
 			return tables.computeIfAbsent(tableName, k -> createTable(tableName));
 		} else {

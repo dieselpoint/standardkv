@@ -9,12 +9,12 @@ import com.dieselpoint.buffers.Buffer;
 import com.dieselpoint.buffers.ByteArray;
 import com.dieselpoint.standardkv.Cursor;
 import com.dieselpoint.standardkv.StoreException;
-import com.dieselpoint.standardkv.Table;
+import com.dieselpoint.standardkv.KVTable;
 import com.dieselpoint.standardkv.Transaction;
 import com.dieselpoint.standardkv.WriteBatch;
 import com.dieselpoint.util.CommonUtil;
 
-public class RocksDBTable implements Table {
+public class RocksDBTable implements KVTable {
 
 	private RocksDB db;
 	private ColumnFamilyHandle handle;
