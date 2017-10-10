@@ -1,5 +1,6 @@
 package com.dieselpoint.standardkv.impl.memdb;
 
+import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
 
 import com.dieselpoint.standardkv.Bucket;
@@ -55,6 +56,18 @@ public class MemDBBucket implements Bucket {
 	public WriteBatch newWriteBatch() {
 		// TODO Auto-generated method stub
 		return null;
+	}
+
+	@Override
+	public List<String> getTableNames() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public void dropTable(String name) {
+		// TODO Auto-generated method stub
+		
 	}
 
 }
