@@ -6,8 +6,8 @@ import java.util.concurrent.ConcurrentHashMap;
 import com.dieselpoint.standardkv.Bucket;
 import com.dieselpoint.standardkv.KVTable;
 import com.dieselpoint.standardkv.Transaction;
-import com.dieselpoint.standardkv.Util;
 import com.dieselpoint.standardkv.WriteBatch;
+import com.dieselpoint.util.NameUtil;
 
 public class MemDBBucket implements Bucket {
 
@@ -35,7 +35,7 @@ public class MemDBBucket implements Bucket {
 	}
 
 	private MemDBTable createTable(String tableName) {
-		Util.checkForLegalName(tableName);
+		NameUtil.checkForLegalName(tableName);
 		MemDBTable table = new MemDBTable(tableName);
 		return table;
 	}

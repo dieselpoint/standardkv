@@ -22,9 +22,9 @@ import com.dieselpoint.standardkv.Bucket;
 import com.dieselpoint.standardkv.StoreException;
 import com.dieselpoint.standardkv.KVTable;
 import com.dieselpoint.standardkv.Transaction;
-import com.dieselpoint.standardkv.Util;
 import com.dieselpoint.standardkv.WriteBatch;
 import com.dieselpoint.util.FileUtil;
+import com.dieselpoint.util.NameUtil;
 
 
 public class RocksDBBucket implements Bucket {
@@ -39,7 +39,7 @@ public class RocksDBBucket implements Bucket {
 	
 	public RocksDBBucket(String rootDir, String bucketName) {
 		
-		Util.checkForLegalName(bucketName);
+		NameUtil.checkForLegalName(bucketName);
 
 		File pathFile = new File(rootDir, bucketName);
 		pathFile.mkdirs();
@@ -128,7 +128,7 @@ public class RocksDBBucket implements Bucket {
 	
 	private RocksDBTable createTable(String tableName) {
 		try {
-			Util.checkForLegalName(tableName);
+			NameUtil.checkForLegalName(tableName);
 			
 			ColumnFamilyDescriptor desc = new ColumnFamilyDescriptor(tableName.getBytes(StandardCharsets.UTF_8), cfo);
 			ColumnFamilyHandle handle = db.createColumnFamily(desc);

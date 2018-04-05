@@ -3,16 +3,14 @@ package com.dieselpoint.standardkv.impl.rocksdb;
 import org.rocksdb.ColumnFamilyHandle;
 import org.rocksdb.RocksDB;
 import org.rocksdb.RocksDBException;
-import org.rocksdb.WriteOptions;
 
 import com.dieselpoint.buffers.Buffer;
 import com.dieselpoint.buffers.ByteArray;
 import com.dieselpoint.standardkv.Cursor;
-import com.dieselpoint.standardkv.StoreException;
 import com.dieselpoint.standardkv.KVTable;
+import com.dieselpoint.standardkv.StoreException;
 import com.dieselpoint.standardkv.Transaction;
-import com.dieselpoint.standardkv.WriteBatch;
-import com.dieselpoint.util.CommonUtil;
+import com.dieselpoint.util.NameUtil;
 
 public class RocksDBTable implements KVTable {
 
@@ -21,11 +19,7 @@ public class RocksDBTable implements KVTable {
 
 
 	public RocksDBTable(RocksDB db, String tableName, ColumnFamilyHandle handle) {
-		
-		if (CommonUtil.isEmpty(tableName)) {
-			throw new StoreException("tableName is empty");
-		}
-		
+		NameUtil.checkForLegalName(tableName);
 		this.db = db;
 		this.handle = handle;
 	}

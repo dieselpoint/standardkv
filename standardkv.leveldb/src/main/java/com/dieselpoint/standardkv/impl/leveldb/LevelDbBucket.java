@@ -9,12 +9,10 @@ import org.iq80.leveldb.DBIterator;
 
 import com.dieselpoint.buffers.ByteArray;
 import com.dieselpoint.standardkv.Bucket;
-import com.dieselpoint.standardkv.StoreException;
 import com.dieselpoint.standardkv.KVTable;
 import com.dieselpoint.standardkv.Transaction;
-import com.dieselpoint.standardkv.Util;
 import com.dieselpoint.standardkv.WriteBatch;
-import com.dieselpoint.util.CommonUtil;
+import com.dieselpoint.util.NameUtil;
 
 public class LevelDbBucket implements Bucket {
 
@@ -24,9 +22,7 @@ public class LevelDbBucket implements Bucket {
 	private ConcurrentHashMap<String, KVTable> tables = new ConcurrentHashMap<String, KVTable>();
 
 	public LevelDbBucket(DB db, String bucketName) {
-		if (!CommonUtil.isAllLettersOrDigits(bucketName)) {
-			throw new StoreException("bucketName must consist of letters and digits only");
-		}
+		NameUtil.checkForLegalName(bucketName);
 		this.db = db;
 		this.bucketName = bucketName;
 	}
@@ -75,7 +71,7 @@ public class LevelDbBucket implements Bucket {
 	}
 
 	private LevelDbTable createTable(String tableName) {
-		Util.checkForLegalName(tableName);
+		NameUtil.checkForLegalName(tableName);
 		return new LevelDbTable(db, bucketName, tableName);
 	}
 
