@@ -24,10 +24,6 @@ public interface Buffer extends Comparable<Buffer> {
 	 * It's used in Presto internally.
 	 * But it uses sun.misc.Unsafe to read/write primitives
 	 * 
-	 * 
-	 * 
-	 * 
-	 * 	used in presto internally
 	 * 	look at how it uses unsafe to get ints and longs and other things
 	 */
 	
@@ -37,6 +33,9 @@ public interface Buffer extends Comparable<Buffer> {
 	public int size();
 	public boolean eof();
 	public void clear();
+	
+	public byte readByte(int position);
+	// TODO add rest of read*(position) methods
 	
 	public byte readByte();
 	public int readInt();

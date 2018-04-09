@@ -89,6 +89,11 @@ public class ByteArray implements Buffer, Externalizable {
 	public byte readByte() {
 		return array[position++];
 	}
+	
+	@Override
+	public byte readByte(int position) {
+		return array[position];
+	}
 
 	@Override
 	public int readInt() {
