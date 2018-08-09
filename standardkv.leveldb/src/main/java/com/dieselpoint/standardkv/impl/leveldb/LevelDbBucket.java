@@ -62,15 +62,12 @@ public class LevelDbBucket implements Bucket {
 	}
 
 	@Override
-	public KVTable getTable(String tableName, boolean createIfNecessary) {
-		if (createIfNecessary) {
-			return tables.computeIfAbsent(tableName, k -> createTable(tableName));
-		} else {
-			return tables.get(tableName);
-		}
+	public KVTable getTable(String tableName) {
+		return tables.get(tableName);
 	}
 
-	private LevelDbTable createTable(String tableName) {
+	@Override
+	public LevelDbTable createTable(String tableName) {
 		NameUtil.checkForLegalName(tableName);
 		return new LevelDbTable(db, bucketName, tableName);
 	}

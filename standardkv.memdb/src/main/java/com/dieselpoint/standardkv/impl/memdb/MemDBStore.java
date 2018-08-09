@@ -14,7 +14,7 @@ import com.dieselpoint.standardkv.Store;
  */
 public class MemDBStore implements Store {
 	
-	private ConcurrentHashMap<String, Bucket> buckets = new ConcurrentHashMap();
+	private ConcurrentHashMap<String, Bucket> buckets = new ConcurrentHashMap<>();
 
 	@Override
 	public void init(String name) {
@@ -25,16 +25,15 @@ public class MemDBStore implements Store {
 	}
 
 	@Override
-	public Bucket getBucket(String bucketName, boolean createIfNecessary) {
-		if (createIfNecessary) {
-			return buckets.computeIfAbsent(bucketName, k -> createBucket(bucketName));
-		} else {
-			return buckets.get(bucketName);
-		}
+	public Bucket getBucket(String bucketName) {
+		return buckets.get(bucketName);
 	}
 	
-	private MemDBBucket createBucket(String bucketName) {
-		return new MemDBBucket(bucketName);
+	@Override
+	public MemDBBucket createBucket(String bucketName) {
+		MemDBBucket bucket = new MemDBBucket(bucketName);
+		buckets.put(bucketName, bucket);
+		return bucket;
 	}
 
 }

@@ -26,15 +26,12 @@ public class MemDBBucket implements Bucket {
 	}
 
 	@Override
-	public KVTable getTable(String tableName, boolean createIfNecessary) {
-		if (createIfNecessary) {
-			return tables.computeIfAbsent(tableName, k -> createTable(tableName));
-		} else {
-			return tables.get(tableName);
-		}
+	public KVTable getTable(String tableName) {
+		return tables.get(tableName);
 	}
 
-	private MemDBTable createTable(String tableName) {
+	@Override
+	public MemDBTable createTable(String tableName) {
 		NameUtil.checkForLegalName(tableName);
 		MemDBTable table = new MemDBTable(tableName);
 		return table;

@@ -13,7 +13,26 @@ public interface Bucket {
 	/**
 	 * Get a reference to a table. Returns null if it does not exist.
 	 */
-	public KVTable getTable(String name, boolean createIfNecessary);
+	public KVTable getTable(String name);
+	
+	
+	/**
+	 * Create a new table.
+	 */
+	public KVTable createTable(String name);
+	
+	/**
+	 * Gets a table or creates it if it doesn't exist. Does it atomically.
+	 */
+	default public KVTable getOrCreateTable(String name) {
+		synchronized (this) {
+			KVTable table = getTable(name);
+			if (table == null) {
+				table = createTable(name);
+			}
+			return table;
+		}
+	}
 	
 	/**
 	 * Delete a table.

@@ -51,16 +51,14 @@ public class LevelDbStore implements Store {
 	}
 
 	@Override
-	public Bucket getBucket(String bucketName, boolean createIfNecessary) {
-		if (createIfNecessary) {
-			return buckets.computeIfAbsent(bucketName, k -> createBucket(bucketName));
-		} else {
-			return buckets.get(bucketName);
-		}
+	public Bucket getBucket(String bucketName) {
+		return buckets.get(bucketName);
 	}
 	
-	private LevelDbBucket createBucket(String bucketName) {
-		return new LevelDbBucket(db, bucketName);
+	public LevelDbBucket createBucket(String bucketName) {
+		LevelDbBucket bucket = new LevelDbBucket(db, bucketName);
+		buckets.put(bucketName, bucket);
+		return bucket;
 	}
 	
 	

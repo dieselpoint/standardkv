@@ -72,6 +72,9 @@ public class RocksDBTable implements KVTable {
 	public Buffer get(Buffer key) {
 		
 		// TODO fix
+		
+		// The newest version will now allow a value byte array to be filled
+		
 		byte [] keyarr = ((ByteArray)key).getTrimmedArray();
 		
 		try {

@@ -6,7 +6,6 @@ import org.rocksdb.RocksIterator;
 
 import com.dieselpoint.buffers.Buffer;
 import com.dieselpoint.buffers.ByteArray;
-import com.dieselpoint.buffers.ByteSpan;
 import com.dieselpoint.standardkv.Cursor;
 
 

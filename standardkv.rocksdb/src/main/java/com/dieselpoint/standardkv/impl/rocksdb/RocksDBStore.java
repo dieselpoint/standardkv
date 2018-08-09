@@ -2,6 +2,7 @@ package com.dieselpoint.standardkv.impl.rocksdb;
 
 
 
+import java.io.File;
 import java.util.Iterator;
 import java.util.Map.Entry;
 import java.util.concurrent.ConcurrentHashMap;
@@ -10,6 +11,8 @@ import org.rocksdb.RocksDB;
 
 import com.dieselpoint.standardkv.Bucket;
 import com.dieselpoint.standardkv.Store;
+import com.dieselpoint.standardkv.StoreException;
+import com.dieselpoint.util.NameUtil;
 
 public class RocksDBStore implements Store {
 	
@@ -39,18 +42,28 @@ public class RocksDBStore implements Store {
 	}
 
 	@Override
-	public Bucket getBucket(String bucketName, boolean createIfNecessary) {
-		return buckets.computeIfAbsent(bucketName, k -> openBucket(bucketName, createIfNecessary));
+	public Bucket getBucket(String bucketName) {
+		return buckets.get(bucketName);
 	}
 	
-	private RocksDBBucket openBucket(String bucketName, boolean createIfNecessary) {
-		if (createIfNecessary || RocksDBBucket.exists(rootDir, bucketName)) {
-			return new RocksDBBucket(rootDir, bucketName);
-		} else {
-			return null;
-		}
-	}	
+	public RocksDBBucket createBucket(String bucketName) {
+		
+		NameUtil.checkForLegalName(bucketName);
 
+		File pathFile = new File(rootDir, bucketName);
+		if (pathFile.exists()) {
+			throw new StoreException("Already exists: " + bucketName);
+		}
+		
+		pathFile.mkdirs();
+		String path = pathFile.getAbsolutePath();
+
+		RocksDBBucket bucket = new RocksDBBucket(path);
+		buckets.put(bucketName, bucket);
+		return bucket;
+	}	
+	
+	
 	@Override
 	public void close() {
 		// doing it this way allows buckets to be reopened, and it's safer if there is a crash on .close()

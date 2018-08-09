@@ -1,6 +1,5 @@
 package com.dieselpoint.standardkv.impl.rocksdb;
 
-import java.io.File;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.nio.charset.StandardCharsets;
@@ -19,8 +18,8 @@ import org.rocksdb.RocksDBException;
 import org.rocksdb.WriteOptions;
 
 import com.dieselpoint.standardkv.Bucket;
-import com.dieselpoint.standardkv.StoreException;
 import com.dieselpoint.standardkv.KVTable;
+import com.dieselpoint.standardkv.StoreException;
 import com.dieselpoint.standardkv.Transaction;
 import com.dieselpoint.standardkv.WriteBatch;
 import com.dieselpoint.util.FileUtil;
@@ -37,14 +36,8 @@ public class RocksDBBucket implements Bucket {
 	private ColumnFamilyOptions cfo = this.getColumnFamilyOptions();
 	private WriteOptions wo = new WriteOptions();
 	
-	public RocksDBBucket(String rootDir, String bucketName) {
-		
-		NameUtil.checkForLegalName(bucketName);
-
-		File pathFile = new File(rootDir, bucketName);
-		pathFile.mkdirs();
-		
-		this.path = pathFile.getAbsolutePath();
+	public RocksDBBucket(String path) {
+		this.path = path;
 	
 		try {
 
@@ -80,7 +73,7 @@ public class RocksDBBucket implements Bucket {
 				ColumnFamilyDescriptor desc = descriptors.get(i);
 				ColumnFamilyHandle handle = handles.get(i);
 				
-				String tableName = new String(desc.columnFamilyName(), StandardCharsets.UTF_8);
+				String tableName = new String(desc.getName(), StandardCharsets.UTF_8);
 				tables.put(tableName, new RocksDBTable(db, tableName, handle));
 			}
 
@@ -118,15 +111,12 @@ public class RocksDBBucket implements Bucket {
 	
 	
 	@Override
-	public KVTable getTable(String tableName, boolean createIfNecessary) {
-		if (createIfNecessary) {
-			return tables.computeIfAbsent(tableName, k -> createTable(tableName));
-		} else {
-			return tables.get(tableName);
-		}
+	public KVTable getTable(String tableName) {
+		return tables.get(tableName);
 	}
 	
-	private RocksDBTable createTable(String tableName) {
+	@Override
+	public RocksDBTable createTable(String tableName) {
 		try {
 			NameUtil.checkForLegalName(tableName);
 			
@@ -199,10 +189,6 @@ public class RocksDBBucket implements Bucket {
 			throw new StoreException(e);
 		}
 	}
-
-	public static boolean exists(String rootDir, String bucketName) {
-		return (new File(rootDir, bucketName)).exists();
-	}	
 	
 
 }

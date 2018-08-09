@@ -2,20 +2,18 @@ package com.dieselpoint.standardkv;
 
 import java.io.UnsupportedEncodingException;
 
-import org.junit.Test;
-
 import com.dieselpoint.buffers.ByteArray;
 
 
 abstract public class TestStore {
 
-	@Test
+
 	public void test() throws UnsupportedEncodingException {
 		
 		Store store = getStore();
 		
-		Bucket bucket = store.getBucket("mybucket", true);
-		KVTable table = bucket.getTable("footable", true);
+		Bucket bucket = store.createBucket("mybucket");
+		KVTable table = bucket.createTable("footable");
 		
 		table.put(new ByteArray("aa"), new ByteArray("a_value"));
 		table.put(new ByteArray("foo"), new ByteArray("bar"));
