@@ -5,7 +5,7 @@ import java.util.concurrent.ConcurrentSkipListMap;
 
 import com.dieselpoint.buffers.Buffer;
 import com.dieselpoint.buffers.ByteArray;
-import com.dieselpoint.standardkv.Cursor;
+import com.dieselpoint.standardkv.KVCursor;
 import com.dieselpoint.standardkv.KVTable;
 import com.dieselpoint.standardkv.Transaction;
 import com.dieselpoint.standardkv.WriteBatch;
@@ -50,7 +50,7 @@ public class MemDBTable implements KVTable {
 	}
 
 	@Override
-	public Cursor newCursor() {
+	public KVCursor newCursor() {
 		return new MemDBCursor(map);
 	}
 

@@ -3,7 +3,7 @@ package com.dieselpoint.standardkv;
 import com.dieselpoint.buffers.Buffer;
 
 
-public interface Cursor {
+public interface KVCursor {
 
 	public void beforeFirst();
 	

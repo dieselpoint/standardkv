@@ -6,7 +6,7 @@ import org.rocksdb.RocksDBException;
 
 import com.dieselpoint.buffers.Buffer;
 import com.dieselpoint.buffers.ByteArray;
-import com.dieselpoint.standardkv.Cursor;
+import com.dieselpoint.standardkv.KVCursor;
 import com.dieselpoint.standardkv.KVTable;
 import com.dieselpoint.standardkv.StoreException;
 import com.dieselpoint.standardkv.Transaction;
@@ -42,7 +42,7 @@ public class RocksDBTable implements KVTable {
 	}
 
 	@Override
-	public Cursor newCursor() {
+	public KVCursor newCursor() {
 		return new RocksDBCursor(db, handle);
 	}
 

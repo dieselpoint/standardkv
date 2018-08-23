@@ -6,10 +6,10 @@ import org.rocksdb.RocksIterator;
 
 import com.dieselpoint.buffers.Buffer;
 import com.dieselpoint.buffers.ByteArray;
-import com.dieselpoint.standardkv.Cursor;
+import com.dieselpoint.standardkv.KVCursor;
 
 
-public class RocksDBCursor implements Cursor {
+public class RocksDBCursor implements KVCursor {
 	
 	private RocksIterator iterator;
 	private boolean beforeFirst = true;

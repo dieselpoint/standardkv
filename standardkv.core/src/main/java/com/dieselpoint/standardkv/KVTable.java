@@ -26,6 +26,6 @@ public interface KVTable {
 
 	public void remove(Transaction trans, Buffer key);
 	
-	public Cursor newCursor();
+	public KVCursor newCursor();
 	
 }

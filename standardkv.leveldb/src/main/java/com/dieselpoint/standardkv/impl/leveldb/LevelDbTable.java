@@ -5,7 +5,7 @@ import org.iq80.leveldb.DB;
 import com.dieselpoint.buffers.Buffer;
 import com.dieselpoint.buffers.ByteArray;
 import com.dieselpoint.buffers.ByteSpan;
-import com.dieselpoint.standardkv.Cursor;
+import com.dieselpoint.standardkv.KVCursor;
 import com.dieselpoint.standardkv.KVTable;
 import com.dieselpoint.standardkv.Transaction;
 import com.dieselpoint.standardkv.WriteBatch;
@@ -32,7 +32,7 @@ public class LevelDbTable implements KVTable {
 
 
 	@Override
-	public Cursor newCursor() {
+	public KVCursor newCursor() {
 		return new LevelDbCursor(db, keyBuf, keyPrefixLen);
 	}
 

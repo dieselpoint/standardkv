@@ -123,7 +123,10 @@ public class RocksDBBucket implements Bucket {
 			ColumnFamilyDescriptor desc = new ColumnFamilyDescriptor(tableName.getBytes(StandardCharsets.UTF_8), cfo);
 			ColumnFamilyHandle handle = db.createColumnFamily(desc);
 
-			return new RocksDBTable(db, tableName, handle);
+			RocksDBTable table = new RocksDBTable(db, tableName, handle);
+			tables.put(tableName, table);
+			return table;
+			
 		} catch (RocksDBException e) {
 			throw new StoreException(e);
 		}

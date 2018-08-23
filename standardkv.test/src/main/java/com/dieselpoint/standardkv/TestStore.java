@@ -20,7 +20,7 @@ abstract public class TestStore {
 		table.put(new ByteArray("foo"), new ByteArray("bar1"));
 		table.put(new ByteArray("foo2"), new ByteArray("bar2"));
 
-		Cursor curs = table.newCursor();
+		KVCursor curs = table.newCursor();
 		
 		curs.seek(new ByteArray("fo"));
 		
@@ -31,7 +31,7 @@ abstract public class TestStore {
 			}
 		}
 		
-		Cursor c = table.newCursor();
+		KVCursor c = table.newCursor();
 		while (c.next()) {
 			System.out.println("key:" + c.getKey().readString());
 		}

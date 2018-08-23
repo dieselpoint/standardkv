@@ -8,11 +8,11 @@ import org.iq80.leveldb.DBIterator;
 import com.dieselpoint.buffers.Buffer;
 import com.dieselpoint.buffers.ByteArray;
 import com.dieselpoint.buffers.ByteSpan;
-import com.dieselpoint.standardkv.Cursor;
+import com.dieselpoint.standardkv.KVCursor;
 import com.dieselpoint.standardkv.StoreException;
 
 
-public class LevelDbCursor implements Cursor {
+public class LevelDbCursor implements KVCursor {
 	
 	private DBIterator iterator;
 	private ByteArray keyBuf = new ByteArray();

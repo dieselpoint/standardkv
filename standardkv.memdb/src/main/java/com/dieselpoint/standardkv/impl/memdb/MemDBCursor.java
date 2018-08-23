@@ -5,10 +5,10 @@ import java.util.Map.Entry;
 import java.util.concurrent.ConcurrentSkipListMap;
 
 import com.dieselpoint.buffers.Buffer;
-import com.dieselpoint.standardkv.Cursor;
+import com.dieselpoint.standardkv.KVCursor;
 
 
-public class MemDBCursor implements Cursor {
+public class MemDBCursor implements KVCursor {
 	
 	private ConcurrentSkipListMap<Buffer, Buffer> map;	
 	private Iterator<Entry<Buffer, Buffer>> it;

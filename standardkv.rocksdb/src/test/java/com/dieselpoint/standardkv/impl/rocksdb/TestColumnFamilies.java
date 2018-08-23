@@ -6,7 +6,7 @@ import org.junit.Test;
 
 import com.dieselpoint.buffers.ByteArray;
 import com.dieselpoint.standardkv.Bucket;
-import com.dieselpoint.standardkv.Cursor;
+import com.dieselpoint.standardkv.KVCursor;
 import com.dieselpoint.standardkv.KVTable;
 import com.dieselpoint.util.FileUtil;
 
@@ -30,13 +30,13 @@ public class TestColumnFamilies {
 		table1.put(new ByteArray("t1k0"), new ByteArray("t1v0"));
 		table1.put(new ByteArray("t1k1"), new ByteArray("t1v1"));
 		
-		Cursor curs0 = table0.newCursor();
+		KVCursor curs0 = table0.newCursor();
 		curs0.beforeFirst();
 		while (curs0.next()) {
 			System.out.println(curs0.getKey().readString() + " " + curs0.getValue().readString());
 		}
 		
-		Cursor curs1 = table1.newCursor();
+		KVCursor curs1 = table1.newCursor();
 		curs1.beforeFirst();
 		while (curs1.next()) {
 			System.out.println(curs1.getKey().readString() + " " + curs1.getValue().readString());
