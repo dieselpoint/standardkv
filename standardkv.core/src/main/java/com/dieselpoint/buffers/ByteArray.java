@@ -271,6 +271,14 @@ public class ByteArray implements Buffer, Externalizable {
 		}
 	}
 	
+	@Override
+	public void appendChars(char[] text, int offset, int len) {
+		int end = offset + len;
+		for (int i = offset; i < end; i++) {
+			appendUtf8Char(text[i]);
+		}
+	}
+	
 	public void insert(int position, Buffer buf) {
 		
 		if (buf instanceof ByteArray) {
@@ -478,5 +486,6 @@ public class ByteArray implements Buffer, Externalizable {
 			throw new UnsupportedOperationException("Not yet implemented");
 		}
 	}
+
 	
 }

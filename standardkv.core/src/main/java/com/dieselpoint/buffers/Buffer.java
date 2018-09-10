@@ -77,8 +77,7 @@ public interface Buffer extends Comparable<Buffer> {
 
 	public void appendUtf8Char(char ch);
 	public void appendString(CharSequence seq);
-
-	
+	public void appendChars(char [] text, int offset, int len);
 	
 	
 	/**
