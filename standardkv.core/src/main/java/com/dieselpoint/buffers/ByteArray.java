@@ -487,5 +487,36 @@ public class ByteArray implements Buffer, Externalizable {
 		}
 	}
 
+	@Override
+	public void appendHexString(CharSequence seq) {
+
+		int len = seq.length();
+		int charCount = len / 2;
+		ensureCapacity(size + charCount);
+
+		if (len % 2 != 0) {
+			throw new IllegalArgumentException("The hexadecimal input string must have an even length.");
+		}
+
+		int ptr = size;
+		for (int i = 0; i < len; i += 2) {
+			int h = hexToBin(seq.charAt(i));
+			int l = hexToBin(seq.charAt(i + 1));
+			array[ptr] = (byte) (h * 16 + l);
+			ptr++;
+		}
+
+		size = ptr;
+	}
+
+	private static int hexToBin(char ch) {
+		if ('0' <= ch && ch <= '9')
+			return ch - '0';
+		if ('A' <= ch && ch <= 'F')
+			return ch - 'A' + 10;
+		if ('a' <= ch && ch <= 'f')
+			return ch - 'a' + 10;
+		throw new IllegalArgumentException("Illegal hexadecimal character: " + ch);
+	}	
 	
 }
