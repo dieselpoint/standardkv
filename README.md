@@ -34,6 +34,9 @@ wiredtiger
 sqlite?
 derby?
 snappydb for android
+https://github.com/lmdbjava/lmdbjava, also jni over regular lmdb
+see if there is a hitchhiker tree implementation
+
 
 
 add benchmarks
