@@ -64,7 +64,6 @@ public interface Buffer extends Comparable<Buffer> {
 	public void copyBytesTo(byte [] dest, int destOffset, int count);
 	public void copyBytesTo(OutputStream dest, int count) throws IOException;
 	
-	
 	public void appendByte(byte b);
 	public void appendInt(int i);
 	public void appendLong(long l);

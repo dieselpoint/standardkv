@@ -3,6 +3,7 @@ package com.dieselpoint.standardkv.impl.rocksdb;
 
 
 import java.io.File;
+import java.io.IOException;
 import java.util.Iterator;
 import java.util.Map.Entry;
 import java.util.concurrent.ConcurrentHashMap;
@@ -43,10 +44,21 @@ public class RocksDBStore implements Store {
 
 	@Override
 	public Bucket getBucket(String bucketName) {
-		return buckets.get(bucketName);
+		return buckets.computeIfAbsent(bucketName, k -> openBucket(k));
 	}
 	
-	public RocksDBBucket createBucket(String bucketName) {
+	private synchronized RocksDBBucket openBucket(String bucketName) {
+		// don't make this public or getBucket() will do odd things
+		File pathFile = new File(rootDir, bucketName);
+		if (!pathFile.exists()) {
+			return null;
+		}
+		String path = getCanonicalPath(pathFile);
+		RocksDBBucket bucket = new RocksDBBucket(path);
+		return bucket;
+	}
+	
+	public synchronized RocksDBBucket createBucket(String bucketName) {
 		
 		NameUtil.checkForLegalName(bucketName);
 
@@ -56,12 +68,20 @@ public class RocksDBStore implements Store {
 		}
 		
 		pathFile.mkdirs();
-		String path = pathFile.getAbsolutePath();
+		String path = getCanonicalPath(pathFile);
 
 		RocksDBBucket bucket = new RocksDBBucket(path);
 		buckets.put(bucketName, bucket);
 		return bucket;
 	}	
+	
+	private String getCanonicalPath(File file) {
+		try {
+			return file.getCanonicalPath();
+		} catch (IOException e) {
+			throw new StoreException(e);
+		}
+	}
 	
 	
 	@Override

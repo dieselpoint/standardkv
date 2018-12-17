@@ -40,6 +40,10 @@ public class ByteArray implements Buffer, Externalizable {
 		this.array = arr;
 		this.size = size;
 	}
+	
+	public void setArray(byte[] arr) {
+		this.array = arr;
+	}
 
 	@Override
 	public int compareTo(Buffer o) {
@@ -309,6 +313,7 @@ public class ByteArray implements Buffer, Externalizable {
 	public void clear() {
 		size = 0;
 		position = 0;
+		hash = 0;
 	}
 	
 
