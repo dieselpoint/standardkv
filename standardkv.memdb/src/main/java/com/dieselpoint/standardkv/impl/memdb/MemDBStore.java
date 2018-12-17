@@ -36,4 +36,9 @@ public class MemDBStore implements Store {
 		return bucket;
 	}
 
+	@Override
+	public void deleteBucket(String bucketName) {
+		buckets.remove(bucketName);
+	}
+
 }

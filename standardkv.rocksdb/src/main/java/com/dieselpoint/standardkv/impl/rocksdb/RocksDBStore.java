@@ -13,6 +13,7 @@ import org.rocksdb.RocksDB;
 import com.dieselpoint.standardkv.Bucket;
 import com.dieselpoint.standardkv.Store;
 import com.dieselpoint.standardkv.StoreException;
+import com.dieselpoint.util.FileUtil;
 import com.dieselpoint.util.NameUtil;
 
 public class RocksDBStore implements Store {
@@ -29,6 +30,8 @@ public class RocksDBStore implements Store {
 	 * 
 	 * An alternative would be to create a completely new Java project with
 	 * jni code to talk to a generic rocks dll or so. That's a big undertaking. Wait.
+	 * 
+	 * Probably better to clone the project and modify the code.
 	 */
 	
 	static {
@@ -48,12 +51,15 @@ public class RocksDBStore implements Store {
 	}
 	
 	private synchronized RocksDBBucket openBucket(String bucketName) {
-		// don't make this public or getBucket() will do odd things
-		File pathFile = new File(rootDir, bucketName);
+		// don't make this public or getBucket() will do odd things when an 
+		// external process calls it.
+
+		String path = getCanonicalPath(bucketName);
+		File pathFile = new File(path);
 		if (!pathFile.exists()) {
 			return null;
 		}
-		String path = getCanonicalPath(pathFile);
+		
 		RocksDBBucket bucket = new RocksDBBucket(path);
 		return bucket;
 	}
@@ -62,21 +68,22 @@ public class RocksDBStore implements Store {
 		
 		NameUtil.checkForLegalName(bucketName);
 
-		File pathFile = new File(rootDir, bucketName);
+		String path = getCanonicalPath(bucketName);
+		File pathFile = new File(path);
 		if (pathFile.exists()) {
-			throw new StoreException("Already exists: " + bucketName);
+			throw new StoreException("Bucket already exists: " + bucketName);
 		}
 		
 		pathFile.mkdirs();
-		String path = getCanonicalPath(pathFile);
 
 		RocksDBBucket bucket = new RocksDBBucket(path);
 		buckets.put(bucketName, bucket);
 		return bucket;
 	}	
 	
-	private String getCanonicalPath(File file) {
+	private String getCanonicalPath(String bucketName) {
 		try {
+			File file = new File(rootDir, bucketName);
 			return file.getCanonicalPath();
 		} catch (IOException e) {
 			throw new StoreException(e);
@@ -93,6 +100,25 @@ public class RocksDBStore implements Store {
 			entry.getValue().close();
 			iterator.remove();
 		}
+	}
+
+	@Override
+	public void deleteBucket(String bucketName) {
+
+		RocksDBBucket bucket = buckets.remove(bucketName);
+		if (bucket == null) {
+			throw new StoreException("Bucket not found: " + bucketName);
+		}
+
+		bucket.close();
+
+		String path = getCanonicalPath(bucketName);
+		try {
+			FileUtil.deleteDir(path);
+		} catch (IOException e) {
+			throw new StoreException(e);
+		}
+
 	}
 
 

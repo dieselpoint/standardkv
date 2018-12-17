@@ -53,11 +53,6 @@ public interface Bucket {
 	 * Create a new WriteBatch object.
 	 */
 	public WriteBatch newWriteBatch();
-	
-	/**
-	 * Delete the bucket in entirety.
-	 */
-	public void delete();
 
 	/**
 	 * Close the bucket. May do nothing on some implementations.

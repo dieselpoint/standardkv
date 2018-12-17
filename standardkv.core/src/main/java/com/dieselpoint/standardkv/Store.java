@@ -21,6 +21,12 @@ public interface Store {
 	public Bucket createBucket(String name);
 	
 	/**
+	 * Delete a bucket. Throw StoreException if it doesn't exist.
+	 */
+	public void deleteBucket(String name);
+	
+	
+	/**
 	 * Gets bucket or creates new one if it doesn't exist. Does it atomically.
 	 */
 	default public Bucket getOrCreateBucket(String name) {

@@ -4,11 +4,14 @@ import static org.fusesource.leveldbjni.JniDBFactory.factory;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.Map.Entry;
 import java.util.concurrent.ConcurrentHashMap;
 
 import org.iq80.leveldb.DB;
+import org.iq80.leveldb.DBIterator;
 import org.iq80.leveldb.Options;
 
+import com.dieselpoint.buffers.ByteArray;
 import com.dieselpoint.standardkv.Bucket;
 import com.dieselpoint.standardkv.Store;
 import com.dieselpoint.standardkv.StoreException;
@@ -59,6 +62,46 @@ public class LevelDbStore implements Store {
 		LevelDbBucket bucket = new LevelDbBucket(db, bucketName);
 		buckets.put(bucketName, bucket);
 		return bucket;
+	}
+
+
+	@Override
+	public void deleteBucket(String name) {
+		// TODO fix
+		throw new UnsupportedOperationException();
+		/*
+		 * 
+	@Override
+	public void delete() {
+
+		ByteArray keyBuf = new ByteArray();
+		keyBuf.appendString(bucketName);
+		keyBuf.appendByte(LevelDbTable.DOT);
+		byte[] prefix = keyBuf.getTrimmedArray();
+		int prefixLen = prefix.length;
+
+		DBIterator it = db.iterator();
+		it.seek(prefix);
+		while (it.hasNext()) {
+			Entry<byte[], byte[]> entry = it.next();
+			byte[] key = entry.getKey();
+
+			// see if key matches prefix
+			if (key.length < prefix.length) {
+				break;
+			}
+			for (int i = 0; i < prefixLen; i++) {
+				if (key[i] != prefix[i]) {
+					break;
+				}
+			}
+
+			db.delete(key);
+		}
+	}
+
+		 */
+		
 	}
 	
 	

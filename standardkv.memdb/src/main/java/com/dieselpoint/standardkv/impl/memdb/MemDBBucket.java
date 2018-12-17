@@ -11,14 +11,9 @@ import com.dieselpoint.util.NameUtil;
 
 public class MemDBBucket implements Bucket {
 
-	private ConcurrentHashMap<String, MemDBTable> tables = new ConcurrentHashMap();
+	private ConcurrentHashMap<String, MemDBTable> tables = new ConcurrentHashMap<>();
 
 	public MemDBBucket(String name) {
-	}
-
-	@Override
-	public void delete() {
-		tables.clear();
 	}
 
 	@Override

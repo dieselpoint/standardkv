@@ -5,6 +5,11 @@ import java.io.UnsupportedEncodingException;
 import com.dieselpoint.buffers.ByteArray;
 
 
+/**
+ * Parent class of concrete test classes in each of the implementation modules.
+ * @author ccleve
+ *
+ */
 abstract public class TestStore {
 
 
@@ -36,8 +41,7 @@ abstract public class TestStore {
 			System.out.println("key:" + c.getKey().readString());
 		}
 		
-		bucket.delete();
-		
+		store.deleteBucket("mybucket");
 		
 	}
 

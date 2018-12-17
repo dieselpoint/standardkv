@@ -28,35 +28,6 @@ public class LevelDbBucket implements Bucket {
 	}
 
 	@Override
-	public void delete() {
-
-		ByteArray keyBuf = new ByteArray();
-		keyBuf.appendString(bucketName);
-		keyBuf.appendByte(LevelDbTable.DOT);
-		byte[] prefix = keyBuf.getTrimmedArray();
-		int prefixLen = prefix.length;
-
-		DBIterator it = db.iterator();
-		it.seek(prefix);
-		while (it.hasNext()) {
-			Entry<byte[], byte[]> entry = it.next();
-			byte[] key = entry.getKey();
-
-			// see if key matches prefix
-			if (key.length < prefix.length) {
-				break;
-			}
-			for (int i = 0; i < prefixLen; i++) {
-				if (key[i] != prefix[i]) {
-					break;
-				}
-			}
-
-			db.delete(key);
-		}
-	}
-
-	@Override
 	public void close() {
 		// do nothing
 	}

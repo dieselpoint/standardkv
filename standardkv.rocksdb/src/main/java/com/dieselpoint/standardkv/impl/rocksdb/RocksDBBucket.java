@@ -147,16 +147,7 @@ public class RocksDBBucket implements Bucket {
 		return cfo;
 	}
 	
-	
-	@Override
-	public void delete() {
-		db.close();
-		try {
-			FileUtil.deleteDir(path);
-		} catch (IOException e) {
-			throw new StoreException(e);
-		}
-	}
+
 
 	@Override
 	public Transaction startTransaction() {
