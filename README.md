@@ -1,45 +1,72 @@
-#StandardKV
+# StandardKV
 
-StandardKV provides a standardized interface over a key/value store. It also contains several implementations over common kv stores.
 
-Every KV store does things a little differently, which makes it difficult to swap out stores in your app. StandardKV
-is designed to be a standard interface over several popular stores. It's written to be as lightweight as possible.
+Every KV store does things a little differently, which makes it difficult to swap out stores in your app. StandardKV provides a 
+standardized interface over popular stores which makes it possible.
 
-It doesn't support every little dial and knob in each store, but it's actually not bad. And the implementations
+It doesn't support every little dial and knob in each store, but it's actually not bad. The implementations
 are designed to be really simple, with very few lines of code, so that it should be easy to tweak the store-specific
 configurations.
 
-To get started, include the main kvstore dependency in your project:
+To get started, include an implementation in your project:
 
-<> (is this necessary?)
-
-and at least one implementation dependency:
-
-<>
-
-In your code, create a store like this:
-
-
-```Java
-Store store = StoreFactory.getStore(stuff here);
+```XML
+<dependency>
+    <groupId>com.dieselpoint</groupId>
+    <artifactId>standardkv.rocksdb</artifactId>
+    <version>${version}</version>
+</dependency>
 ```
 
-Usage goes here.
+And use it like this:
+
+```Java
+
+StoreFactory.getStore("/temp/rocksdb", StoreFactory.ROCKSDB);
+		
+Bucket bucket = store.createBucket("mybucket");
+KVTable table = bucket.createTable("footable");
+		
+table.put(new ByteArray("aa"), new ByteArray("a_value"));
+table.put(new ByteArray("foo"), new ByteArray("bar"));
+table.put(new ByteArray("foo"), new ByteArray("bar1"));
+table.put(new ByteArray("foo2"), new ByteArray("bar2"));
+
+KVCursor curs = table.newCursor();
+		
+curs.seek(new ByteArray("fo"));
+		
+while (true) {
+	System.out.println("key:" + curs.getKey().readString() + " value:" + curs.getValue().readString());
+	if (!curs.next()) {
+		break;
+	}
+}
+		
+KVCursor c = table.newCursor();
+while (c.next()) {
+	System.out.println("key:" + c.getKey().readString());
+}
+		
+store.deleteBucket("mybucket");
+```
 
 
-to add:
+# TO DO
+
+Add implementations for:
+
 berkeleydb
+
 mapdb
+
+lmdb 
+
 wiredtiger
+
 sqlite?
+
 derby?
-snappydb for android
-https://github.com/lmdbjava/lmdbjava, also jni over regular lmdb
-see if there is a hitchhiker tree implementation
 
-
-
-add benchmarks
-add concurrency testing. test for crash and consistency separately.
-
+Consider adding some benchmarking code.
 
